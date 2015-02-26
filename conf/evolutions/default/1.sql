@@ -19,14 +19,6 @@ create table monitored_summoner_stats (
   match_date                timestamp)
 ;
 
-create table summoner_result (
-  summoner_id               bigint,
-  league_points             integer,
-  match_id                  bigint,
-  win                       boolean,
-  date                      timestamp)
-;
-
 create sequence monitored_summoner_seq;
 
 
@@ -39,8 +31,6 @@ SET REFERENTIAL_INTEGRITY FALSE;
 drop table if exists monitored_summoner;
 
 drop table if exists monitored_summoner_stats;
-
-drop table if exists summoner_result;
 
 SET REFERENTIAL_INTEGRITY TRUE;
 

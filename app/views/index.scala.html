@@ -1,9 +1,12 @@
-@(labels: java.util.Collection[Long], values: java.util.Collection[Integer])
+@(labels: java.util.Collection[Long], values: java.util.List[Integer])
 
 @main("SumBet") {
-	<h1>The Bet</h1>
-	<h2>Summoner: 5P4RK4</h2>
-	<h2>Goal: Plat V (1850 TorbScore)</h2>
+	<h1><u>The Bet</u></h1>
+	<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Summoner: 5P4RK4</h3>
+  </div>
+  <div class="panel-body">    
 	@if(labels.size() > 0){
 	<canvas id="myChart" width="800" height="400"></canvas>	
        <script>
@@ -49,7 +52,7 @@
    			    pointDot : true,
 
    			    //Number - Radius of each point dot in pixels
-   			    pointDotRadius : 4,
+   			    pointDotRadius : 10,
 
    			    //Number - Pixel width of point dot stroke
    			    pointDotStrokeWidth : 1,
@@ -71,13 +74,44 @@
        }else{
        		<h1>No Data</h1>
        }
-       <h2>The Agreement</h2>
+         </div>
+</div>
+<div role="tabpanel">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#goal" aria-controls="home" role="tab" data-toggle="tab">Goal</a></li>
+    <li role="presentation"><a href="#agreement" aria-controls="profile" role="tab" data-toggle="tab">Agreement</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="goal">
+	    <p><strong>Goal:</strong> Platinum V (1850 TorbScore)</p>
+	    <p><strong>Current Level:</strong> @if(values.size() > 0){
+	    		@values.get(values.size() - 1)
+	    	}
+	    </p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="agreement">
+	    <h2>The Agreement</h2>
        <p>Jonathan has until March 8th, 11:59pm to reach Platinum V. He must be in a game (does not include champion select or queue) by 11:58 for that game to count. 
 If jonathan wins, Nima must play 4 hours of warthunder with Shay or another game of his choice (other than dayz or league) and mike must play 4 hours of Diablo with Dave / lee. 
 In the event jonathan does not reach platinum V on the designated date, he must play 8 hours with Shay of a game of his choice (other than league or dayz).
 All losers must stream. The whole time.
        </p>
-       <pre>
-       Accepted by: Jon, Nima, Michael
-       </pre>
+       <pre>Accepted by: Jon, Nima, Michael</pre>
+    </div>
+  </div>
+
+</div>       
 }
+<script>
+$('#goal a').click(function (e) {
+	  e.preventDefault()
+	  $(this).tab('show')
+	});
+$('#agreement a').click(function (e) {
+	  e.preventDefault()
+	  $(this).tab('show')
+	});
+</script>

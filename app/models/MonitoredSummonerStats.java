@@ -4,7 +4,6 @@ import java.util.Date;
 
 import javax.persistence.Entity;
 
-import play.Logger;
 import play.db.ebean.Model;
 
 import com.robrua.orianna.type.core.common.Tier;
@@ -54,7 +53,6 @@ public class MonitoredSummonerStats extends Model {
 		int tierVal = getTierValue(tier);
 		int nextTierVal = getTierValue(getNextTier(tier));
 		int divVal = (nextTierVal - tierVal) / 5;
-		Logger.info(tierVal +"," + nextTierVal +"," + divVal);
 		switch(division){
 		case "I":
 			return tierVal + (divVal*4);

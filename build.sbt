@@ -8,6 +8,6 @@ libraryDependencies ++= Seq(
   cache
 )
 
-libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
+libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
 
 play.Project.playJavaSettings

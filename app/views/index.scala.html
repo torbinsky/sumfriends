@@ -1,15 +1,15 @@
 @(labels: java.util.Collection[Long], values: java.util.Collection[Integer])
 
-@main("Welcome to Play") {
-	<canvas id="myChart" width="800" height="400"></canvas>
-	<pre>
-		
-		
-	</pre>
+@main("SumBet") {
+	<h1>The Bet</h1>
+	<h2>Summoner: 5P4RK4</h2>
+	<h2>Goal: Plat V (1850 TorbScore)</h2>
+	@if(labels.size() > 0){
+	<canvas id="myChart" width="800" height="400"></canvas>	
        <script>
        	var ctx = document.getElementById("myChart").getContext("2d");
        	var data = {
-       		    labels: [@Html(labels.map(t => "moment(" + t + ").format('dddd')").mkString(", "))],
+       		    labels: [@Html(labels.map(t => "moment(" + t + ").format('MMM Do h:mm a')").mkString(", "))],
        		    datasets: [
        		        {
        		            label: "My First dataset",
@@ -68,4 +68,16 @@
    	    };
        	var myLineChart = new Chart(ctx).Line(data, options);
        </script>
+       }else{
+       		<h1>No Data</h1>
+       }
+       <h2>The Agreement</h2>
+       <p>Jonathan has until March 8th, 11:59pm to reach Platinum V. He must be in a game (does not include champion select or queue) by 11:58 for that game to count. 
+If jonathan wins, Nima must play 4 hours of warthunder with Shay or another game of his choice (other than dayz or league) and mike must play 4 hours of Diablo with Dave / lee. 
+In the event jonathan does not reach platinum V on the designated date, he must play 8 hours with Shay of a game of his choice (other than league or dayz).
+All losers must stream. The whole time.
+       </p>
+       <pre>
+       Accepted by: Jon, Nima, Michael
+       </pre>
 }

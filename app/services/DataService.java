@@ -1,37 +1,58 @@
 package services;
-import java.util.ArrayList;
 
-import models.SummonerResult;
-import play.libs.F.Tuple;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import models.MonitoredSummoner;
+import models.MonitoredSummonerStats;
+import play.Logger;
+import play.libs.Json;
 
 import com.avaje.ebean.Ebean;
 
 
 public class DataService {
-	public static final long JON_SUMMONER_ID = 31243475;
-	public static Tuple<ArrayList<Long>, ArrayList<Integer>> get14DayTrend(long summonerId){
-//		List<SummonerResult> results = Ebean.find(SummonerResult.class)
-//		.where().eq("summonerId", summonerId)
-//		.findList();
-//		System.out.println(Json.toJson(results).toString());
-		return DATA;
+	static final Logger.ALogger logger = Logger.of(DataService.class);
+	
+	public static Date getLastSummonerCheck(long summonerId){
+		MonitoredSummoner result = Ebean.find(MonitoredSummoner.class, summonerId);
+		if(result != null){
+			return result.lastCheck;
+		}
+		
+		return null;
 	}
 	
-	private static final Tuple<ArrayList<Long>, ArrayList<Integer>> DATA = new Tuple<>(new ArrayList<Long>(), new ArrayList<Integer>());
-	static {
-		Ebean.save(new SummonerResult(JON_SUMMONER_ID, 1340, true));
-		Ebean.save(new SummonerResult(JON_SUMMONER_ID, 1325, false));
-		Ebean.save(new SummonerResult(JON_SUMMONER_ID, 1350, true));
-		DATA._1.add(1424912054156L - 86400000L*3);
-		DATA._2.add(1340);
-		
-		DATA._1.add(1424912054156L - 86400000L*2);
-		DATA._2.add(1390);
-		
-		DATA._1.add(1424912054156L - 86400000L);
-		DATA._2.add(1300);
-		
-		DATA._1.add(1424912054156L);
-		DATA._2.add(1350);
+	public static void updateSummonerCheck(long summonerId){		
+		MonitoredSummoner summoner = Ebean.find(MonitoredSummoner.class, summonerId);
+		if(summoner == null){
+			summoner = new MonitoredSummoner(summonerId, new Date());
+		}
+		Ebean.save(summoner);
 	}
+
+	public static void saveMatchStats(MonitoredSummonerStats mss) {
+		Map<String, Object> statFind = new HashMap<>();
+		statFind.put("matchId", mss.matchId);
+		statFind.put("monitoredSummonerId", mss.monitoredSummonerId);
+		
+		if(Ebean.find(MonitoredSummonerStats.class).where().allEq(statFind).findUnique() == null){
+			logger.info("Saving stats: " + Json.toJson(mss).toString());
+			Ebean.save(mss);
+		}else{
+			logger.info("Match stats already exists for " + mss.matchId + "," + mss.monitoredSummonerId);
+		}
+	}
+	
+	public static List<MonitoredSummonerStats> getStats(long summonerId){
+		return Ebean
+				.find(MonitoredSummonerStats.class)
+				.where().eq("monitoredSummonerId", summonerId)
+				.order().asc("matchDate")
+				.findList();
+	}
+	
+//	public static void updateSummonerStats(long summonerId, )
 }

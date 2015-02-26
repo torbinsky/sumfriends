@@ -8,6 +8,8 @@ libraryDependencies ++= Seq(
   cache
 )
 
+libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.2.3"
+
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
 
 play.Project.playJavaSettings

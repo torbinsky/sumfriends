@@ -1,33 +1,25 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import play.libs.F.Tuple;
+import models.MonitoredSummonerStats;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.DataService;
+import common.Constants;
 
 public class Application extends Controller {	
 	
     public static Result index() {
-//    	RiotAPI.setMirror(Region.NA);
-//        RiotAPI.setRegion(Region.NA);
-//        RiotAPI.setAPIKey("851a8f32-a96f-4074-9751-bbcd853a0df6");
-//        List<League> leagues = RiotAPI.getLeaguesBySummonerID(DataService.JON_SUMMONER_ID);
-//        for(League league : leagues){
-//        	if(league.getQueueType() == QueueType.RANKED_SOLO_5x5){        		
-//        		List<LeagueEntry> entries = league.getEntries();
-//        		for(LeagueEntry le : entries){
-//        			if(le.getSummoner().getID() == DataService.JON_SUMMONER_ID){
-//        				//System.out.println(league.getTier() + " - " + le.getDivision() + " - " + le.getLeaguePoints());
-//        				break;
-//        			}
-//        		}
-//        		break;
-//        	}
-//        }
-        Tuple<ArrayList<Long>, ArrayList<Integer>> data = DataService.get14DayTrend(DataService.JON_SUMMONER_ID);
-        return ok(views.html.index.render(data._1, data._2));
+    	List<MonitoredSummonerStats> stats = DataService.getStats(Constants.JON_SUMMONER_ID);
+    	List<Long> dates = new ArrayList<>();
+    	List<Integer> leaguePoints = new ArrayList<>();
+    	for(MonitoredSummonerStats mss : stats){
+    		dates.add(mss.matchDate.getTime());
+    		leaguePoints.add(mss.leaguePoints);
+    	}
+    	return ok(views.html.index.render(dates, leaguePoints));
     }
 
 }

@@ -8,6 +8,6 @@ libraryDependencies ++= Seq(
   cache
 )
 
-//libraryDependencies += "com.robrua" % "orianna" % "2.0.5"
+libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.18"
 
 play.Project.playJavaSettings

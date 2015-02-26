@@ -23,6 +23,19 @@ public class MonitoredSummonerStats extends Model {
 	public String division;
 	public Date matchDate;
 	
+	public MonitoredSummonerStats(long matchId, long monitoredSummonerId,
+			boolean win, int leaguePoints, String tier, String division,
+			Date matchDate) {
+		super();
+		this.matchId = matchId;
+		this.monitoredSummonerId = monitoredSummonerId;
+		this.win = win;
+		this.leaguePoints = leaguePoints;
+		this.tier = tier;
+		this.division = division;
+		this.matchDate = matchDate;
+	}
+
 	public MonitoredSummonerStats(long summonerId, League league, LeagueEntry entry, MatchSummary summary) {
 		this.monitoredSummonerId = summonerId;
 		this.matchId = summary.getID();

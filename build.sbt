@@ -5,7 +5,8 @@ version := "1.0-SNAPSHOT"
 libraryDependencies ++= Seq(
   javaJdbc,
   javaEbean,
-  cache
+  cache,
+  "joda-time" % "joda-time" % "2.3"
 )
 
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.2.3"

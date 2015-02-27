@@ -2,8 +2,8 @@ package common;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import models.MonitoredSummonerStats;
 import jobs.SummonerMonitor;
+import models.MonitoredSummonerStats;
 import play.Application;
 import play.GlobalSettings;
 import play.Logger;
@@ -15,7 +15,6 @@ import akka.actor.Props;
 
 import com.robrua.orianna.api.core.RiotAPI;
 import com.robrua.orianna.type.api.LoadPolicy;
-import com.robrua.orianna.type.api.RateLimit;
 import com.robrua.orianna.type.core.common.Region;
 import com.robrua.orianna.type.core.common.Tier;
 
@@ -51,6 +50,12 @@ public class Global extends GlobalSettings {
 			DataService.saveMatchStats(new MonitoredSummonerStats(1742869232, 31243475, true, 1690, Tier.GOLD.name(), "III", new Date(1424915185902L)));
 			DataService.saveMatchStats(new MonitoredSummonerStats(1742936748, 31243475, false, 1690, Tier.GOLD.name(), "III", new Date(1424920011899L)));
 			DataService.saveMatchStats(new MonitoredSummonerStats(1743001170, 31243475, true, 1690, Tier.GOLD.name(), "III", new Date(1424923200748L)));
+			DataService.saveMatchStats(new MonitoredSummonerStats(1743039968, 31243475, true, 1710, Tier.GOLD.name(), "II", new Date(1424954223)));
+			DataService.saveMatchStats(new MonitoredSummonerStats(1743889555, 31243475, true, 1735, Tier.GOLD.name(), "II", new Date(1425030292)));
+			DataService.saveMatchStats(new MonitoredSummonerStats(1743971569, 31243475, true, 1761, Tier.GOLD.name(), "II", new Date(1425034535)));
+			DataService.saveMatchStats(new MonitoredSummonerStats(1744035371, 31243475, true, 1787, Tier.GOLD.name(), "II", new Date(1425038738)));
+			DataService.saveMatchStats(new MonitoredSummonerStats(1744116636, 31243475, false, 1773, Tier.GOLD.name(), "II", new Date(1425044604)));
+			DataService.saveMatchStats(new MonitoredSummonerStats(1744150643, 31243475, false, 1765, Tier.GOLD.name(), "II", new Date(1425046957)));
 		}catch(Exception e){
 			logger.warn("Legacy data error.", e);
 		}

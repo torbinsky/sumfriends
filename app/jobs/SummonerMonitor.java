@@ -46,9 +46,12 @@ public class SummonerMonitor extends UntypedActor {
 	}	
 	
 	private void doSummonerUpdate(long summonerId) {
-		logger.debug("Getting leagues...");
+		// Fetch recent match summary
+		List<MatchSummary> history = RiotAPI.getMatchHistory(summonerId, QueueType.RANKED_SOLO_5x5);
+		MatchSummary ms = history.get(history.size() - 1); // Grab the most recent match
 		
 		// Fetch league information
+		logger.debug("Getting leagues...");
 		List<League> leagues = RiotAPI.getLeaguesBySummonerID(summonerId);
 		LeagueEntry leagueEntry = null;
 		League league = null;
@@ -67,13 +70,8 @@ public class SummonerMonitor extends UntypedActor {
         		break;
         	}
         }
-        // Fetch recent match summary
-        List<MatchSummary> history = RiotAPI.getMatchHistory(summonerId, QueueType.RANKED_SOLO_5x5);
-//        for(MatchSummary ms : history){
-        MatchSummary ms = history.get(history.size() - 1); // Grab the most recent match        
         MonitoredSummonerStats mss = new MonitoredSummonerStats(summonerId, league, leagueEntry, ms);
         DataService.saveMatchStats(mss);
-//        }
 	}
 
 	public static class UpdateSummonerMsg {

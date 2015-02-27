@@ -1,80 +1,119 @@
-@(labels: java.util.Collection[Long], values: java.util.List[Integer])
+@(labels: java.util.Collection[Long], values: java.util.List[Integer], goal: Integer)
 
 @main("SumBet") {
 	<h1><u>The Bet</u></h1>
-	<div class="panel panel-default">
+<div class="panel panel-default">
   <div class="panel-heading">
     <h3 class="panel-title">Summoner: 5P4RK4</h3>
   </div>
+  
   <div class="panel-body">    
 	@if(labels.size() > 0){
-	<canvas id="myChart" width="800" height="400"></canvas>	
-       <script>
-       	var ctx = document.getElementById("myChart").getContext("2d");
-       	var data = {
-       		    labels: [@Html(labels.map(t => "moment(" + t + ").format('MMM Do h:mm a')").mkString(", "))],
-       		    datasets: [
-       		        {
-       		            label: "My First dataset",
-       		            fillColor: "rgba(220,220,220,0.2)",
-       		            strokeColor: "rgba(220,220,220,1)",
-       		            pointColor: "rgba(220,220,220,1)",
-       		            pointStrokeColor: "#fff",
-       		            pointHighlightFill: "#fff",
-       		            pointHighlightStroke: "rgba(220,220,220,1)",
-       		            data: [@values.mkString(", ")]
-       		        }
-       		    ]
-    	};
-   		var options = {
-   				///Boolean - Whether grid lines are shown across the chart
-   			    scaleShowGridLines : true,
+		<div class="ct-chart ct-major-twelfth" style="font-size: 20px;"></div>
+		<script>
+		var chart = new Chartist.Line('.ct-chart', {
+			  labels: [@Html(labels.map(t => "moment(" + t + ").format('MMM Do h:mm a')").mkString(", "))],
+			  series: [
+			    {
+			      name: 'TorbScore',
+			      data: [@values.mkString(", ")]
+			    }
+			  ]
+			},
+			{
+			  low: 1600,
+			  high: @goal + 50,
+			  showArea: true,
+			  axisY: {
+			      // The offset of the labels to the chart area
+			      offset: 40,
+			      // Allows you to correct label positioning on this axis by positive or negative x and y offset.
+			      labelOffset: {
+			        x: 0,
+			        y: 0
+			      },
+			      // If labels should be shown or not
+			      showLabel: true,
+			      // If the axis grid should be drawn or not
+			      showGrid: true,
+			      // Interpolation function that allows you to intercept the value from the axis label
+			      labelInterpolationFnc: Chartist.noop,
+			      // This value specifies the minimum height in pixel of the scale steps
+			      scaleMinSpace: 40
+			    }
+			});
+chart.on('created', function(data){
+	var chartRect = data.chartRect;
+	var bounds = data.bounds;
+	console.log(chartRect);
+	console.log(bounds);
+	var scale = (chartRect.y1 - chartRect.y2) / (bounds.max - bounds.min);
+	var centerY = chartRect.y1 - scale * (@goal - bounds.min);
+	var radius = 8;
+	var newElement = new Chartist.Svg('circle', {
+      cx: chartRect.x2 - radius,
+      cy: centerY,
+      r: radius
+    }, 'goalMarker');
+	chart.svg.append(newElement);
+});    
+chart.on('draw', function(data) {	
+  if(data.type === 'line' || data.type === 'area') {
+    data.element.animate({
+      d: {
+        begin: 2000 * data.index,
+        dur: 2000,
+        from: data.path.clone().scale(1, 0).translate(0, data.chartRect.height()).stringify(),
+        to: data.path.clone().stringify(),
+        easing: Chartist.Svg.Easing.easeOutQuint
+      }
+    });
+  }
+});
+var $chart = $('.ct-chart');
+var $toolTip = $chart
+  .append('<div class="mytooltip" style="color: white; position: absolute; width: 120px; height: 120px; background-image: url(\'http://ddragon.leagueoflegends.com/cdn/5.2.1/img/champion/Chogath.png\')"></div>')
+  .find('.mytooltip')
+  .hide();
 
-   			    //String - Colour of the grid lines
-   			    scaleGridLineColor : "rgba(0,0,0,.05)",
+var $goaltoolTip = $chart
+  .append('<div class="goaltooltip" style="position: absolute;">Goal: @goal</div>')
+  .find('.goaltooltip')
+  .hide();
 
-   			    //Number - Width of the grid lines
-   			    scaleGridLineWidth : 1,
+$chart.on('mouseenter', '.goalMarker', function() {	
+  $goaltoolTip.show();
+});
 
-   			    //Boolean - Whether to show horizontal lines (except X axis)
-   			    scaleShowHorizontalLines: true,
+$chart.on('mouseleave', '.goalMarker', function() {
+  $goaltoolTip.hide();
+});
 
-   			    //Boolean - Whether to show vertical lines (except Y axis)
-   			    scaleShowVerticalLines: true,
+$chart.on('mouseenter', '.ct-point', function() {
+  var $point = $(this),
+    value = $point.attr('ct:value'),
+    seriesName = $point.parent().attr('ct:series-name');
+  $toolTip.html(value).show();
+});
 
-   			    //Boolean - Whether the line is curved between points
-   			    bezierCurve : true,
+$chart.on('mouseleave', '.ct-point', function() {
+  $toolTip.hide();
+});
 
-   			    //Number - Tension of the bezier curve between points
-   			    bezierCurveTension : 0.4,
+$chart.on('mousemove', function(event) {
+  $toolTip.css({
+    left: (event.offsetX || event.originalEvent.layerX) - $toolTip.width() / 2 - 10,
+    top: (event.offsetY || event.originalEvent.layerY) - $toolTip.height() - 40
+  });
+  $goaltoolTip.css({
+    left: (event.offsetX || event.originalEvent.layerX) - $goaltoolTip.width() / 2 - 10,
+    top: (event.offsetY || event.originalEvent.layerY) - $goaltoolTip.height() - 40
+  });
+});
 
-   			    //Boolean - Whether to show a dot for each point
-   			    pointDot : true,
-
-   			    //Number - Radius of each point dot in pixels
-   			    pointDotRadius : 10,
-
-   			    //Number - Pixel width of point dot stroke
-   			    pointDotStrokeWidth : 1,
-
-   			    //Number - amount extra to add to the radius to cater for hit detection outside the drawn point
-   			    pointHitDetectionRadius : 20,
-
-   			    //Boolean - Whether to show a stroke for datasets
-   			    datasetStroke : true,
-
-   			    //Number - Pixel width of dataset stroke
-   			    datasetStrokeWidth : 2,
-
-   			    //Boolean - Whether to fill the dataset with a colour
-   			    datasetFill : true
-   	    };
-       	var myLineChart = new Chart(ctx).Line(data, options);
-       </script>
-       }else{
-       		<h1>No Data</h1>
-       }
-         </div>
+		</script>
+	}
+  </div>
 </div>
 <div role="tabpanel">
   <!-- Nav tabs -->
@@ -86,8 +125,8 @@
   <!-- Tab panes -->
   <div class="tab-content">
     <div role="tabpanel" class="tab-pane active" id="goal">
-	    <p><strong>Goal:</strong> Platinum V (1850 TorbScore)</p>
-	    <p><strong>Current Level:</strong> @if(values.size() > 0){
+	    <p><strong>Goal:</strong> @goal TorbScore</p>
+	    <p><strong>Current Score:</strong> @if(values.size() > 0){
 	    		@values.get(values.size() - 1)
 	    	}
 	    </p>
@@ -115,3 +154,8 @@ $('#agreement a').click(function (e) {
 	  $(this).tab('show')
 	});
 </script>
+<style>
+.goalMarker{
+	fill: green;
+}
+</style>

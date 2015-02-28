@@ -1,0 +1,54 @@
+.index .content-main{
+	padding-top: 40px;
+	padding-bottom: 80px;
+	background-color: #333;
+}
+
+body {
+  height: 100%;
+  background-color: #666;
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+  font-family: Alegreya Sans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.app-title {
+	font-size: 50px;
+}
+
+.big-text {
+	font-size: 40px;
+	font-weight: 500;
+	line-height: 40px;
+	text-transform: uppercase;
+}
+
+#make-bet {
+	margin-right: 30px;
+	padding-bottom: 20px;
+}
+
+#make-bet p {
+	margin-bottom: 20px;
+}
+
+#your-bets {
+	color: rgb(204, 204, 204);
+	background-color: #000000;
+	border: 1px solid #000000;
+	min-height: 150px;
+	padding-bottom: 20px;
+}
+
+.header {
+	border-bottom-color: rgb(51, 51, 51);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+}
+
+.form-signin {
+	max-width: 600px;
+	padding: 15px;
+	margin: 0 auto;
+	margin-top: 50px;
+}

@@ -18,6 +18,7 @@ import sumbet.models.SummonerLeagueHistory;
 import sumbet.utils.OriannaDataTransformer;
 
 import com.robrua.orianna.api.core.RiotAPI;
+import com.robrua.orianna.type.core.league.League;
 import com.robrua.orianna.type.core.matchhistory.MatchSummary;
 
 public class RiotDataServiceImpl implements RiotDataService {
@@ -43,9 +44,8 @@ public class RiotDataServiceImpl implements RiotDataService {
 	}
 
 	@Override
-	public Promise<List<SummonerLeagueHistory>> getRecentSummonerLeagueHistory() {
-		// TODO Auto-generated method stub
-		return null;
+	public Promise<List<SummonerLeagueHistory>> getRecentSummonerLeagueHistory(long summonerId) {
+		return createPromise(() -> doGetRecentSummonerLeagueHistory(summonerId));
 	}
 	
 	private Map<Match, List<MatchParticipant>> doGetRecentMatchesForSummoner(long summonerId){
@@ -65,8 +65,15 @@ public class RiotDataServiceImpl implements RiotDataService {
 			oSummoner = RiotAPI.getSummonerByName(name);
 		}else{
 			oSummoner = RiotAPI.getSummonerByID(id);
-		}		 
-		return new Summoner(id, oSummoner.getName(), oSummoner.getProfileIconID(), oSummoner.getRevisionDate(), oSummoner.getLevel());		
+		}
+		
+		return OriannaDataTransformer.transformSummoner(oSummoner);		
+	}
+	
+	private List<SummonerLeagueHistory> doGetRecentSummonerLeagueHistory(long summonerId){
+		List<League> oLeagues = RiotAPI.getLeaguesBySummonerID(summonerId);		
+		
+		return OriannaDataTransformer.transformLeagues(summonerId, oLeagues);
 	}
 	
 	<T> Promise<T> createPromise(Function0<T> f){

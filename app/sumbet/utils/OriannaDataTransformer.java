@@ -6,7 +6,12 @@ import java.util.List;
 import play.libs.F.Tuple;
 import sumbet.models.Match;
 import sumbet.models.MatchParticipant;
+import sumbet.models.Summoner;
+import sumbet.models.SummonerLeagueHistory;
 
+import com.robrua.orianna.type.core.common.Tier;
+import com.robrua.orianna.type.core.league.League;
+import com.robrua.orianna.type.core.league.LeagueEntry;
 import com.robrua.orianna.type.core.match.Participant;
 import com.robrua.orianna.type.core.match.ParticipantStats;
 import com.robrua.orianna.type.core.matchhistory.MatchSummary;
@@ -116,5 +121,91 @@ public class OriannaDataTransformer {
 		}
 		
 		return transformed;
+	}
+
+	public static Summoner transformSummoner(com.robrua.orianna.type.core.summoner.Summoner oSummoner) {
+		return new Summoner(oSummoner.getID(), oSummoner.getName(), oSummoner.getProfileIconID(), oSummoner.getRevisionDate(), oSummoner.getLevel());
+	}
+
+	public static List<SummonerLeagueHistory> transformLeagues(long summonerId, List<League> oLeagues) {
+		List<SummonerLeagueHistory> transformed = new ArrayList<>();
+		for(League oLeague : oLeagues){
+			for(LeagueEntry oLEntry : oLeague.getEntries()){
+				if(oLEntry.getSummoner().getID() == summonerId){
+					int score = convertTierAndDivisionToScoreBase(oLeague.getTier(), oLEntry.getDivision()) + oLEntry.getLeaguePoints();
+					SummonerLeagueHistory slh = new SummonerLeagueHistory(
+							oLeague.getQueueType().toString(), 
+							summonerId, 
+							oLEntry.getLeaguePoints(), 
+							oLeague.getTier().toString(), 
+							oLEntry.getDivision(), 
+							score, 
+							oLEntry.getWins(),
+							oLEntry.getLosses()
+						);
+					transformed.add(slh);
+    				break;
+    			}
+			}
+		}
+		return transformed;
+	}
+	
+	public static int convertTierAndDivisionToScoreBase(Tier tier, String division){
+		int tierVal = getTierValue(tier);
+		int nextTierVal = getTierValue(getNextTier(tier));
+		int divVal = (nextTierVal - tierVal) / 5;
+		switch(division){
+		case "I":
+			return tierVal + (divVal*4);
+		case "II":
+			return tierVal + (divVal*3);
+		case "III":
+			return tierVal + (divVal*2);
+		case "IV":
+			return tierVal + (divVal);
+		case "V":
+		default:
+			return tierVal;
+		}
+	}
+
+	protected static int getTierValue(Tier tier) {
+		int tierValue;
+		switch(tier){
+		case SILVER:
+			tierValue = 1150;
+			break;
+		case GOLD:
+			tierValue = 1500;
+			break;
+		case PLATINUM:
+			tierValue = 1850;
+			break;
+		case DIAMOND:
+			tierValue = 2200;
+			break;
+		case BRONZE:
+		default:
+			tierValue = 850;
+		}
+		
+		return tierValue;
+	}
+	
+	public static Tier getNextTier(Tier tier){
+		switch(tier){
+		case SILVER:
+			return Tier.GOLD;
+		case GOLD:
+			return Tier.PLATINUM;
+		case PLATINUM:
+			return Tier.DIAMOND;
+		case DIAMOND:
+			return Tier.MASTER;
+		case BRONZE:
+		default:
+			return Tier.SILVER;
+		}
 	}
 }

@@ -19,9 +19,7 @@ public class SummonerLeagueHistory extends Model {
 	public int wins;
 	public int losses;
 	
-	public SummonerLeagueHistory(String queue, long summonerId,
-			int leaguePoints, String tier, String division, int score,
-			int wins, int losses) {
+	public SummonerLeagueHistory(String queue, long summonerId, int leaguePoints, String tier, String division, int score, int wins, int losses) {
 		super();
 		this.queue = queue;
 		this.summonerId = summonerId;

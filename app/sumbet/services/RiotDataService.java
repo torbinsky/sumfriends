@@ -19,5 +19,5 @@ public interface RiotDataService {
 	Promise<Summoner> getSummonerById(long id);
 	Promise<Summoner> getSummonerByName(String name);
 	Promise<Map<Match, List<MatchParticipant>>> getRecentMatchesForSummoner(long summonerId);
-	Promise<List<SummonerLeagueHistory>> getRecentSummonerLeagueHistory();
+	Promise<List<SummonerLeagueHistory>> getRecentSummonerLeagueHistory(long summonerId);
 }

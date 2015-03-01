@@ -1,7 +1,9 @@
 package sumbet.services;
 
+import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import play.Logger;
@@ -28,6 +30,31 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 	
 	@Override
+	public Promise<Void> updateTrackedSummoner(long summonerId, @Nullable Date lastUpdated) {
+		// If null, set last updated to now
+		Date lu = lastUpdated == null ? new Date() : lastUpdated;
+		logger.debug("Updating tracked summoner to being last updated on " + lu);
+		return createPromise(() -> doUpdateTrackedSummoner(summonerId, lu));
+	}
+	
+	private Void doUpdateTrackedSummoner(long summonerId, Date lastUpdated){
+		Ebean.update(new TrackedSummoner(summonerId, lastUpdated));
+		return null;
+	}
+
+	@Override
+	public Promise<List<TrackedSummoner>> getLeastRecentlyUpdatedTrackedSummoners(int limit) {
+		logger.debug("Getting " + limit + " of the least recently tracked summoners...");
+		return createPromise(() -> doGetLeastRecentlyUpdatedTrackedSummoners(limit));
+	}
+	
+	private List<TrackedSummoner> doGetLeastRecentlyUpdatedTrackedSummoners(int limit) {
+		List<TrackedSummoner> results = Ebean.find(TrackedSummoner.class).setMaxRows(limit).orderBy("lastCheck asc").findList();
+		logger.debug("Found " + results.size() + " results.");
+		return results;
+	}
+
+	@Override
 	public Promise<Summoner> getSummonerByName(String name) {
 		logger.debug("Getting summoner by name " + name);
 		return createPromise(() -> doGetSummonerByName(name));
@@ -46,6 +73,7 @@ public class EbeanDataServiceImpl implements DataService {
 	
 	private Summoner doGetSummonerById(long id) {
 		Summoner summoner = Ebean.find(Summoner.class, id);
+		logger.debug("Found summoner " + summoner);
 		return summoner;
 	}
 
@@ -56,7 +84,13 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 	
 	private Summoner doCreateOrUpdateSummoner(Summoner summoner){
-		Ebean.save(summoner);
+		if(Ebean.find(Summoner.class).where().idEq(summoner.id).findRowCount() == 0){
+			logger.debug("Saving new summoner " + summoner);
+			Ebean.save(summoner);
+		}else{
+			logger.debug("Updating summoner " + summoner);
+			Ebean.update(summoner);
+		}
 		return summoner;
 	}
 
@@ -70,10 +104,12 @@ public class EbeanDataServiceImpl implements DataService {
 		// GET
 		SummonerLeagueHistory existing = Ebean.find(SummonerLeagueHistory.class, history.id);
 		if(existing != null){
+			logger.debug("LeagueHistory already exists for " + history.id);
 			return existing;
 		}
 		
 		// CREATE
+		logger.debug("Saving new history " + history.id);
 		Ebean.save(history);
 		return history;
 	}
@@ -102,24 +138,34 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 
 	@Override
-	public Promise<Match> saveMatch(Match match) {
+	public Promise<Match> saveMatchIfNew(Match match) {
 		logger.debug("Saving match " + match);
-		return createPromise(() -> doSaveMatch(match));
+		return createPromise(() -> doSaveMatchIfNew(match));
 	}
 	
-	private Match doSaveMatch(Match match){
-		Ebean.save(match);
+	private Match doSaveMatchIfNew(Match match){
+		if(Ebean.find(Match.class).where().idEq(match.matchId).findRowCount() == 0){
+			logger.info("Saving match " + match.matchId);
+			Ebean.save(match);
+		}else{
+			logger.debug("Match " + match.matchId + " already exists. Not saving.");
+		}
 		return match;
 	}
 
 	@Override
-	public Promise<MatchParticipant> saveMatchParticipant(MatchParticipant participant) {
-		logger.debug("Saving match participant " + participant);
-		return createPromise(() -> doSaveMatchParticipant(participant));
+	public Promise<MatchParticipant> saveMatchParticipantIfNew(MatchParticipant participant) {
+		logger.trace("Saving match participant " + participant);
+		return createPromise(() -> doSaveMatchParticipantIfNew(participant));
 	}
 	
-	private MatchParticipant doSaveMatchParticipant(MatchParticipant participant){
-		Ebean.save(participant);
+	private MatchParticipant doSaveMatchParticipantIfNew(MatchParticipant participant){
+		if(Ebean.find(MatchParticipant.class).where().idEq(participant.id).findRowCount() == 0){
+			logger.info("Saving new match participant " + participant.id);
+			Ebean.save(participant);
+		}else{
+			logger.debug("MatchParticipant " + participant.id + " already exists. Not saving.");
+		}
 		return participant;
 	}
 
@@ -131,8 +177,13 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 	
 	private TrackedSummoner doTrackSummoner(TrackedSummoner ts){
-		Ebean.save(ts);
-		return ts;
+		TrackedSummoner existing = Ebean.find(TrackedSummoner.class, ts.summonerId);
+		if(existing != null){
+			return existing;
+		}else{
+			Ebean.save(ts);
+			return ts;
+		}
 	}
 	
 	@Override

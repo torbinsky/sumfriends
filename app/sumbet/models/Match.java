@@ -5,12 +5,15 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import play.db.ebean.Model;
 import play.libs.Json;
 
 @Entity
 public class Match extends Model {
 	@Id
+	@JsonProperty(value="id")
 	public long matchId;
 	public long mapId;
 	public Date matchCreation;

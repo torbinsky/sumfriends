@@ -1,6 +1,9 @@
 package sumbet.services;
 
+import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import play.libs.F.Promise;
 import sumbet.models.Bet;
@@ -17,8 +20,17 @@ public interface DataService {
 	Promise<SummonerLeagueHistory> getOrCreateSummonerLeagueHistory(SummonerLeagueHistory history);
 	Promise<Bet> createBet(Bet bet);
 	Promise<Void> joinBet(long betId, long joiningSummonerId);
-	Promise<Match> saveMatch(Match match);
-	Promise<MatchParticipant> saveMatchParticipant(MatchParticipant participant);
+	Promise<Match> saveMatchIfNew(Match match);
+	Promise<MatchParticipant> saveMatchParticipantIfNew(MatchParticipant participant);
 	Promise<TrackedSummoner> trackSummoner(long summonerId);
 	Promise<List<TrackedSummoner>> getTrackedSummoners();
+	Promise<List<TrackedSummoner>> getLeastRecentlyUpdatedTrackedSummoners(int limit);
+	/**
+	 * Updates a {@link TrackedSummoner}'s last updated field
+	 * 
+	 * @parma summonerId the id of the tracked summoner
+	 * @param lastUpdated optional override of last updated. If null, defaults to current date
+	 * @return nothing
+	 */
+	Promise<Void> updateTrackedSummoner(long summonerId, @Nullable Date lastUpdated);
 }

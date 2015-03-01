@@ -13,7 +13,7 @@ public class GuiceUntypedActorFactory {
 		return new GuiceCreator<A>(SumBetGlobal.getInjector(), clazz);
 	}
 	
-	public static ActorRef createActor(Class<? extends UntypedActor> clazz){
-		return Akka.system().actorOf(Props.create(GuiceUntypedActorFactory.getFactory(clazz)));
+	public static ActorRef createActorRef(Class<? extends UntypedActor> clazz, String name){
+		return Akka.system().actorOf(Props.create(GuiceUntypedActorFactory.getFactory(clazz)), name);
 	}
 }

@@ -1,5 +1,6 @@
 package sumbet.models;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
 import play.db.ebean.Model;
@@ -7,8 +8,8 @@ import play.libs.Json;
 
 @Entity
 public class MatchParticipant extends Model {
-	public long summonerId;
-	public long matchId;
+	@EmbeddedId
+	public MatchParticipantId id;
 	public long championId;
 	public long teamId;
 	public long assists;
@@ -104,8 +105,7 @@ public class MatchParticipant extends Model {
 			long visionWardsBoughtInGame, long wardsKilled, long wardsPlaced,
 			boolean winner) {
 		super();
-		this.summonerId = summonerId;
-		this.matchId = matchId;
+		this.id = new MatchParticipantId(summonerId, matchId);
 		this.championId = championId;
 		this.teamId = teamId;
 		this.assists = assists;

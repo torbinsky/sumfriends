@@ -1,11 +1,16 @@
 package sumbet.models;
 
 import javax.persistence.Embeddable;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import play.db.ebean.Model;
 
 @Embeddable
 public class BettingSummonerId extends Model {
+	@Id
+	@GeneratedValue
+	public int id;
 	public long betId;
 	public long bettingSummonerId;
 	

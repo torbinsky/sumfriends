@@ -2,8 +2,8 @@ package sumbet.models;
 
 import java.util.Date;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.PrePersist;
 
 import play.db.ebean.Model;
@@ -11,7 +11,7 @@ import play.libs.Json;
 
 @Entity
 public class SummonerLeagueHistory extends Model {
-	@Id
+	@EmbeddedId
 	public SummonerLeagueHistoryId id;
 	public long summonerId;
 	public int leaguePoints;

@@ -132,7 +132,8 @@ public class OriannaDataTransformer {
 		List<SummonerLeagueHistory> transformed = new ArrayList<>();
 		for(League oLeague : oLeagues){
 			for(LeagueEntry oLEntry : oLeague.getEntries()){
-				if(oLEntry.getSummoner().getID() == summonerId){
+				String playerOrTeamId = oLEntry.getDto().getPlayerOrTeamId();
+				if(!playerOrTeamId.startsWith("TEAM") && Long.parseLong(playerOrTeamId) == summonerId){
 					int score = convertTierAndDivisionToScoreBase(oLeague.getTier(), oLEntry.getDivision()) + oLEntry.getLeaguePoints();
 					SummonerLeagueHistory slh = new SummonerLeagueHistory(
 							oLeague.getQueueType().toString(), 

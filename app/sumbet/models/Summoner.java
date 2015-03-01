@@ -13,15 +13,14 @@ public class Summoner extends Model {
 	@Id
 	public long id;
 	public String name;
-	public int profileIcondId;
+	public int profileIconId;
 	public Date revisionDate;
 	public long summonerLevel;
-	public Summoner(long id, String name, int profileIcondId,
-			Date revisionDate, long summonerLevel) {
+	public Summoner(long id, String name, int profileIconId, Date revisionDate, long summonerLevel) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.profileIcondId = profileIcondId;
+		this.profileIconId = profileIconId;
 		this.revisionDate = revisionDate;
 		this.summonerLevel = summonerLevel;
 	}

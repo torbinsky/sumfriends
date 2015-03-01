@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import play.db.ebean.Model;
+import play.libs.Json;
 
 @Entity
 public class Match extends Model {
@@ -38,4 +39,9 @@ public class Match extends Model {
 		this.region = region;
 		this.season = season;
 	}	
+	
+	@Override
+	public String toString(){
+		return Json.toJson(this).toString();
+	}
 }

@@ -50,6 +50,7 @@ public class OriannaDataTransformer {
 		for(Participant oParticipant : oParticipants){
 			ParticipantStats oStats = oParticipant.getStats();
 			MatchParticipant currentTransformed = new MatchParticipant(
+					oParticipant.getSummonerID(),
 					matchId, 
 					oParticipant.getChampionID(), 
 					oParticipant.getTeam().getID(), 

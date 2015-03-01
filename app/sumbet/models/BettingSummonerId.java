@@ -9,6 +9,16 @@ public class BettingSummonerId extends Model {
 	public long betId;
 	public long bettingSummonerId;
 	
+	public BettingSummonerId() {
+		super();
+	}
+
+	public BettingSummonerId(long betId, long bettingSummonerId) {
+		super();
+		this.betId = betId;
+		this.bettingSummonerId = bettingSummonerId;
+	}
+
 	@Override
 	public boolean equals(Object arg0) {
 		if(arg0 instanceof BettingSummonerId){

@@ -9,4 +9,14 @@ import play.db.ebean.Model;
 public class BettingSummoner extends Model {
 	@EmbeddedId
 	public BettingSummonerId id;
+
+	
+	public BettingSummoner() {
+		super();
+	}
+
+	public BettingSummoner(BettingSummonerId id) {
+		super();
+		this.id = id;
+	}
 }

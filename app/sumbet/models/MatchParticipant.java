@@ -3,9 +3,11 @@ package sumbet.models;
 import javax.persistence.Entity;
 
 import play.db.ebean.Model;
+import play.libs.Json;
 
 @Entity
 public class MatchParticipant extends Model {
+	public long summonerId;
 	public long matchId;
 	public long championId;
 	public long teamId;
@@ -75,7 +77,7 @@ public class MatchParticipant extends Model {
 	public MatchParticipant() {
 		super();
 	}
-	public MatchParticipant(long matchId, long championId, long teamId,
+	public MatchParticipant(long summonerId, long matchId, long championId, long teamId,
 			long assists, long champLevel, long combatPlayerScore, long deaths,
 			long doubleKills, boolean firstBloodAssist, boolean firstBloodKill,
 			boolean firstInhibitorAssist, boolean firstInhibitorKill,
@@ -102,6 +104,7 @@ public class MatchParticipant extends Model {
 			long visionWardsBoughtInGame, long wardsKilled, long wardsPlaced,
 			boolean winner) {
 		super();
+		this.summonerId = summonerId;
 		this.matchId = matchId;
 		this.championId = championId;
 		this.teamId = teamId;
@@ -168,5 +171,10 @@ public class MatchParticipant extends Model {
 		this.wardsKilled = wardsKilled;
 		this.wardsPlaced = wardsPlaced;
 		this.winner = winner;
+	}
+	
+	@Override
+	public String toString(){
+		return Json.toJson(this).toString();
 	}
 }

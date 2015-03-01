@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
+import play.Logger;
 import play.libs.Akka;
 import play.libs.F.Function0;
 import play.libs.F.Promise;
@@ -22,7 +23,8 @@ import com.robrua.orianna.type.core.league.League;
 import com.robrua.orianna.type.core.matchhistory.MatchSummary;
 
 public class RiotDataServiceImpl implements RiotDataService {
-
+	static final Logger.ALogger logger = Logger.of(RiotDataServiceImpl.class);
+	
 	@Inject
 	public RiotDataServiceImpl(){
 		
@@ -30,21 +32,25 @@ public class RiotDataServiceImpl implements RiotDataService {
 
 	@Override
 	public Promise<Summoner> getSummonerById(final long id) {
+		logger.debug("Getting summoner " + id);
 		return createPromise(() -> doGetSummoner(id, null));
 	}
 	
 	@Override
 	public Promise<Summoner> getSummonerByName(String name) {
+		logger.debug("Getting summoner " + name);
 		return createPromise(() -> doGetSummoner(null, name));
 	}
 
 	@Override
 	public Promise<Map<Match, List<MatchParticipant>>> getRecentMatchesForSummoner(long summonerId) {
+		logger.debug("Getting recent matches for summoner " + summonerId);
 		return createPromise(() -> doGetRecentMatchesForSummoner(summonerId));
 	}
 
 	@Override
 	public Promise<List<SummonerLeagueHistory>> getRecentSummonerLeagueHistory(long summonerId) {
+		logger.debug("Getting league history for summoner " + summonerId);
 		return createPromise(() -> doGetRecentSummonerLeagueHistory(summonerId));
 	}
 	
@@ -67,12 +73,14 @@ public class RiotDataServiceImpl implements RiotDataService {
 			oSummoner = RiotAPI.getSummonerByID(id);
 		}
 		
+		logger.debug("Found summoner " + oSummoner);
+		
 		return OriannaDataTransformer.transformSummoner(oSummoner);		
 	}
 	
 	private List<SummonerLeagueHistory> doGetRecentSummonerLeagueHistory(long summonerId){
 		List<League> oLeagues = RiotAPI.getLeaguesBySummonerID(summonerId);		
-		
+		logger.debug("Found " + oLeagues.size() + " leagues for summoner " + summonerId);
 		return OriannaDataTransformer.transformLeagues(summonerId, oLeagues);
 	}
 	

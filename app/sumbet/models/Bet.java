@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import play.db.ebean.Model;
+import play.libs.Json;
 
 @Entity
 public class Bet extends Model {
@@ -24,4 +25,9 @@ public class Bet extends Model {
 	public Date deadline;
 	
 	public long targetSummonerId;
+	
+	@Override
+	public String toString(){
+		return Json.toJson(this).toString();
+	}
 }

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import play.db.ebean.Model;
+import play.libs.Json;
 
 @Entity
 public class Summoner extends Model {
@@ -23,5 +24,10 @@ public class Summoner extends Model {
 		this.profileIcondId = profileIcondId;
 		this.revisionDate = revisionDate;
 		this.summonerLevel = summonerLevel;
-	}	
+	}
+	
+	@Override
+	public String toString(){
+		return Json.toJson(this).toString();
+	}
 }

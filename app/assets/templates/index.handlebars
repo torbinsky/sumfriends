@@ -1,6 +1,6 @@
 <h1></h1>
 
-{{#if isLoggedIn}}
+{{#if account}}
 <div class="col-sm-1"></div>
 <div id="make-bet" class="col-sm-5">
 	<div>
@@ -18,5 +18,5 @@
 {{else}}
 	<p class="big-text">Make a Bet.<br />Let the Struggle Begin.</p>
 	<br />
-	{{#link-to 'signin' classNames="btn btn-primary"}}Sign In{{/link-to}} or {{#link-to 'signup' classNames="btn btn-default"}}Signup{{/link-to}}				
+	<a href="/login" class="btn btn-primary">Sign In</a> or <a href="/signup" class="btn btn-default">Signup</a>				
 {{/if}}

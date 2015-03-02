@@ -18,6 +18,7 @@ public class UserAccount extends Model {
 	public Date updatedAt;
 	public String email;
 	public String passhash;
+	public String sessionToken;
 
 	public UserAccount(long summonerId, String email, String passhash) {
 		super();

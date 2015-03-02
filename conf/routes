@@ -4,6 +4,11 @@
 
 # Home page
 GET     /                           			@sumbet.controllers.Application.index()
+GET		/login									@sumbet.controllers.AuthController.login()
+POST	/login									@sumbet.controllers.AuthController.loginSubmit()
+GET		/signup									@sumbet.controllers.AuthController.signup()
+POST	/signupSubmit							@sumbet.controllers.AuthController.signupSubmit()
+GET		/logout									@sumbet.controllers.AuthController.logout()
 
 GET		/assets/javascripts/routes				@sumbet.controllers.Application.javascriptRoutes()
 GET		/api/v1/matches/:matchId				@sumbet.controllers.ApiController.getMatch(matchId: Long)

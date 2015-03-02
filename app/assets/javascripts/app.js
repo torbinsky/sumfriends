@@ -5,38 +5,13 @@ App.ApplicationAdapter = DS.RESTAdapter.extend({
 });
 
 App.SessionController = Ember.Controller.extend({
-	isAuthenticated: false
+	account: null
 });
 
 App.IndexController = Ember.Controller.extend({
 	needs: ['session'],
 	// Using needs, the controller instance will be available on `controllers`
-	isLoggedIn: Ember.computed.alias('controllers.session.isAuthenticated')
-});
-
-App.SigninController = Ember.Controller.extend({
-	needs: ['session'],
-	isLoggedIn: Ember.computed.alias('controllers.session.isAuthenticated'),
-	username: '',
-	password: '',	
-	actions: {
-		signIn: function () {
-			var self = this;
-			// There is an alias to the session property, so this change propagates
-			// to the session object then the IndexController.
-			this.set('isLoggedIn', true);
-			App.session.logIn(this.get('username'), this.get('password')).then(
-			function() {
-				var previousTransition = self.get('previousTransition');
-				if (previousTransition) {
-					previousTransition.retry();
-					return;
-				}
-				
-				self.transitionToRoute('index');
-			});
-		}
-	}
+	account: Ember.computed.alias('controllers.session.account')
 });
 
 var attr = DS.attr;

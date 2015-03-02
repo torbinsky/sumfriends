@@ -1,6 +1,8 @@
 package sumbet;
 
 public class Constants {
+	public static final String SESSION_TOKEN_COOKIE = "sess_token";
+	
 	public static class ConfigPropNameConstants {
 		public static final String RIOT_API_KEY = "riot.api.key";
 		public static final String TRACKED_SUMMONERS_POLLING_INTERVAL = "sync.tracked_summoner_polling_interval_minutes";

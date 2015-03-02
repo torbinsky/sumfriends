@@ -2,12 +2,14 @@ package sumbet.services;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import play.Logger;
 import play.libs.Akka;
+import play.libs.F.Either;
 import play.libs.F.Function0;
 import play.libs.F.Promise;
 import sumbet.models.Bet;
@@ -18,8 +20,10 @@ import sumbet.models.MatchParticipant;
 import sumbet.models.Summoner;
 import sumbet.models.SummonerLeagueHistory;
 import sumbet.models.TrackedSummoner;
+import sumbet.models.UserAccount;
 
 import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Update;
 
 public class EbeanDataServiceImpl implements DataService {
 	static final Logger.ALogger logger = Logger.of(EbeanDataServiceImpl.class);
@@ -29,6 +33,82 @@ public class EbeanDataServiceImpl implements DataService {
 		
 	}
 	
+	@Override
+	public Promise<String> updateUserAccountSession(long accountId, String token){
+		return createPromise(() -> doUpdateUserAccountSession(accountId, token));
+	}
+	
+	private @Nullable String doUpdateUserAccountSession(long accountId, String token){
+		logger.debug("Updating session for account[" + accountId + "]...");
+		String updStatement = "update user_account set session_token = :token where id = :accountId";
+		Update<UserAccount> update = Ebean.createUpdate(UserAccount.class, updStatement);
+		update.setParameter("token", token);
+		update.setParameter("accountId", accountId);
+		
+		int accountUpdateCount = update.execute();
+		logger.debug("Updated " + accountUpdateCount + " accounts");
+		
+		// Only return the token if the update was successful
+		if(accountUpdateCount > 0){
+			return token;
+		}
+		return null;
+	}
+	
+	@Override
+	public Promise<Either<UserAccount, String>> registerAccount(String email, long summonerId, String passhash) {
+		return createPromise(() -> doRegisterAccount(email, summonerId, passhash));
+	}
+
+	private Either<UserAccount, String> doRegisterAccount(String email, long summonerId, String passhash){
+		try{
+			UserAccount userAccount = new UserAccount(summonerId, email, passhash);
+			userAccount.sessionToken = UUID.randomUUID().toString();
+			Ebean.save(userAccount);
+			return Either.Left(userAccount);
+		}catch(Exception e){
+			if(Ebean.find(UserAccount.class).where().eq("email", email).findRowCount() == 1){
+				return Either.Right("E-mail address already taken.");
+			}
+			if(Ebean.find(UserAccount.class).where().eq("summonerId", summonerId).findRowCount() == 1){
+				return Either.Right("Summoner already taken.");
+			}
+			return Either.Right("Unable to create account. Please try again later.");
+		}
+	}
+
+	@Override
+	public Promise<UserAccount> getUserAccountByEmail(String email) {
+		return createPromise(() -> doGetUserAccountByEmail(email));
+	}
+
+	public UserAccount doGetUserAccountByEmail(String email){
+		return Ebean.find(UserAccount.class).where().eq("email", email).findUnique();
+	}
+
+	@Override
+	public Promise<UserAccount> getUserAccountForSession(String token) {
+		return createPromise(() -> doGetUserAccountForSession(token));
+	}
+
+	public UserAccount doGetUserAccountForSession(String token){
+		return Ebean.find(UserAccount.class).where().eq("sessionToken", token).findUnique();
+	}
+	
+	@Override
+	public Promise<Void> clearUserAccountSession(String sessionToken) {
+		return createPromise(() -> doClearUserAccountSession(sessionToken));
+	}
+
+	private Void doClearUserAccountSession(String sessionToken){
+		logger.debug("Clearing session...");
+		String updStatement = "update user_account set session_token = NULL where session_token = :token";
+		Update<UserAccount> update = Ebean.createUpdate(UserAccount.class, updStatement);
+		update.setParameter("token", sessionToken);
+		logger.debug("Cleared " + update.execute() + " sessions");
+		return null;
+	}
+
 	@Override
 	public Promise<Void> updateTrackedSummoner(long summonerId, @Nullable Date lastUpdated) {
 		// If null, set last updated to now

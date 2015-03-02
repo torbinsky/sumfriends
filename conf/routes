@@ -11,6 +11,7 @@ POST	/signupSubmit							@sumbet.controllers.AuthController.signupSubmit()
 GET		/logout									@sumbet.controllers.AuthController.logout()
 
 GET		/assets/javascripts/routes				@sumbet.controllers.Application.javascriptRoutes()
+GET		/api/v1/account							@sumbet.controllers.ApiController.getAccount()
 GET		/api/v1/matches/:matchId				@sumbet.controllers.ApiController.getMatch(matchId: Long)
 GET		/api/v1/summoners/:summonerId			@sumbet.controllers.ApiController.getSummoner(summonerId: Long)
 

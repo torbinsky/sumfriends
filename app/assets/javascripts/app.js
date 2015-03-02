@@ -5,7 +5,7 @@ App.ApplicationAdapter = DS.RESTAdapter.extend({
 });
 
 App.SessionController = Ember.Controller.extend({
-	account: null
+	account: null //this.store.find('account');
 });
 
 App.IndexController = Ember.Controller.extend({
@@ -23,7 +23,7 @@ App.Summoner = DS.Model.extend({
 	summonerLevel: attr()
 });
 
-App.User = DS.Model.extend({  
+App.Account = DS.Model.extend({  
 	summonerId: attr(),
 	email: attr('string')
 });

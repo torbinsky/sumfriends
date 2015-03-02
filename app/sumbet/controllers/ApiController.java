@@ -8,17 +8,32 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
 import sumbet.models.Match;
+import sumbet.services.AccountService;
 import sumbet.services.DataService;
-import sumbet.actions.AuthenticationRequiredAction;
+import sumbet.actions.SessionRequiredAction;
 import sumbet.dto.api.*;
 
-@With({AuthenticationRequiredAction.class})
+@With({SessionRequiredAction.class})
 public class ApiController extends Controller {
 	private DataService database;
+	private AccountService accountService;
 
 	@Inject
-	public ApiController(DataService database){
-		this.database = database;		
+	public ApiController(DataService database, AccountService accountService){
+		this.database = database;
+		this.accountService = accountService;		
+	}
+	
+	public Promise<Result> getAccount(){
+		String token = getSessionToken();
+		
+		return accountService.getAccountForSession(token).map(ua -> {
+			if(ua == null){
+				return notFound();
+			}else{
+				return (Result)ok(Json.toJson(new UserAccountDto(ua)));
+			}
+		});		
 	}
 	
 	public Result getMatch(long matchId){
@@ -33,5 +48,9 @@ public class ApiController extends Controller {
 				return (Result)ok(Json.toJson(new SummonerDto(s)));
 			}
 		});
+	}
+	
+	protected String getSessionToken() {
+		return SessionRequiredAction.getCookieToken(ctx());
 	}
 }

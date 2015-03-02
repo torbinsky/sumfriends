@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import play.libs.F.Either;
 import play.libs.F.Promise;
 import sumbet.models.Bet;
 import sumbet.models.Match;
@@ -12,6 +13,7 @@ import sumbet.models.MatchParticipant;
 import sumbet.models.Summoner;
 import sumbet.models.SummonerLeagueHistory;
 import sumbet.models.TrackedSummoner;
+import sumbet.models.UserAccount;
 
 public interface DataService {
 	Promise<Summoner> getSummonerByName(String name);
@@ -33,4 +35,9 @@ public interface DataService {
 	 * @return nothing
 	 */
 	Promise<Void> updateTrackedSummoner(long summonerId, @Nullable Date lastUpdated);
+	Promise<Void> clearUserAccountSession(String sessionToken);
+	Promise<UserAccount> getUserAccountForSession(String token);
+	Promise<UserAccount> getUserAccountByEmail(String email);
+	Promise<Either<UserAccount, String>> registerAccount(String email, long summonerId, String passhash);
+	Promise<String> updateUserAccountSession(long accountId, String token);
 }

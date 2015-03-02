@@ -2,10 +2,13 @@ package sumbet.models;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import play.db.ebean.Model;
 
@@ -13,11 +16,19 @@ import play.db.ebean.Model;
 public class UserAccount extends Model {
 	@Id
 	public long id;
+	@Column(unique=true)
 	public long summonerId;
-	public Date createdAt;
-	public Date updatedAt;
+	@Column(unique=true)
 	public String email;
-	public String passhash;
+	
+	@JsonIgnore
+	public Date createdAt;
+	@JsonIgnore
+	public Date updatedAt;
+	@JsonIgnore
+	public String passhash;	
+	@JsonIgnore
+	@Column(unique=true)
 	public String sessionToken;
 
 	public UserAccount(long summonerId, String email, String passhash) {

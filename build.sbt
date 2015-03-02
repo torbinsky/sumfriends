@@ -15,7 +15,8 @@ libraryDependencies ++= Seq(
   "com.robrua" % "orianna" % "2.1.0",
   "joda-time" % "joda-time" % "2.3",
   "com.typesafe.akka" %% "akka-actor" % "2.2.3",
-  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41"
+  "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
+  "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
 emberJsVersion := "1.7.0"

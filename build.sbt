@@ -21,4 +21,6 @@ libraryDependencies ++= Seq(
 
 emberJsVersion := "1.7.0"
 
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
+
 lazy val root = (project in file(".")).enablePlugins(PlayJava)

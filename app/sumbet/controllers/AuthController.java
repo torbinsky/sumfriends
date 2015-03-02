@@ -37,7 +37,8 @@ public class AuthController extends Controller {
 		return accountService.authorizeAsAccount(email, password)
 				.flatMap(ua -> {
 					if(ua == null){
-						return null;
+					    logger.debug("Expecting NPE after this.");
+						return Promise.pure(null);
 					}
 					return accountService.createAccountSession(ua.id);	
 				})

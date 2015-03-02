@@ -1,6 +1,6 @@
-.index .content-main{
-	padding-top: 40px;
+.content-main{
 	padding-bottom: 80px;
+	padding-left: 40px;
 	background-color: #333;
 }
 
@@ -44,11 +44,4 @@ body {
 	border-bottom-color: rgb(51, 51, 51);
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
-}
-
-.form-signin {
-	max-width: 600px;
-	padding: 15px;
-	margin: 0 auto;
-	margin-top: 50px;
 }

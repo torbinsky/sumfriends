@@ -51,13 +51,13 @@ public class SumBetGlobal extends GlobalSettings {
 		RiotAPI.setAPIKey(app.configuration().getString(ConfigPropNameConstants.RIOT_API_KEY));
 		
 		// TODO: REMOVE THIS
-		getInjector().getInstance(DataService.class).trackSummoner(40856292L);
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		getInjector().getInstance(DataService.class).trackSummoner(40856292L);
+//		try {
+//			Thread.sleep(500);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		ActorRef trackedSummonerPoller = GuiceUntypedActorFactory.createActorRef(TrackedSummonerPollingActor.class, "TrackedSumPoller");
 		Integer minuteBetweenTrackedSummonerPolls = app.configuration().getInt(ConfigPropNameConstants.TRACKED_SUMMONERS_POLLING_INTERVAL);

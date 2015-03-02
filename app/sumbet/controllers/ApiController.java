@@ -2,6 +2,7 @@ package sumbet.controllers;
 
 import javax.inject.Inject;
 
+import play.Logger;
 import play.libs.F.Promise;
 import play.libs.Json;
 import play.mvc.Controller;
@@ -15,6 +16,8 @@ import sumbet.dto.api.*;
 
 @With({SessionRequiredAction.class})
 public class ApiController extends Controller {
+	static final Logger.ALogger logger = Logger.of(ApiController.class);
+	
 	private DataService database;
 	private AccountService accountService;
 
@@ -25,8 +28,8 @@ public class ApiController extends Controller {
 	}
 	
 	public Promise<Result> getAccount(){
-		String token = getSessionToken();
-		
+		logger.debug("getAccount");
+		String token = getSessionToken();		
 		return accountService.getAccountForSession(token).map(ua -> {
 			if(ua == null){
 				return notFound();
@@ -37,10 +40,12 @@ public class ApiController extends Controller {
 	}
 	
 	public Result getMatch(long matchId){
+		logger.debug("getMatch(" + matchId + ")");
 		return ok(Json.toJson(new Match()));
 	}
 	
 	public Promise<Result> getSummoner(long summonerId){
+		logger.debug("getSummoner(" + summonerId + ")");
 		return database.getSummonerById(summonerId).map(s -> {
 			if(s == null){
 				return notFound();

@@ -5,7 +5,17 @@ App.ApplicationAdapter = DS.RESTAdapter.extend({
 });
 
 App.SessionController = Ember.Controller.extend({
-	account: null //this.store.find('account');
+	account: null,
+	getSession: function(){
+		var self = this;
+		$.ajax({
+			dataType: "json",
+			url: '/api/v1/account',
+			success: function(result){
+				self.set('account', result.account);
+			}
+		});
+	}.observes('account').on('init')
 });
 
 App.IndexController = Ember.Controller.extend({

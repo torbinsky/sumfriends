@@ -25,7 +25,7 @@ public class AuthController extends Controller {
 	public AuthController(AccountService accountService) {
 		this.accountService = accountService;
 	}
-
+	
 	public Result login() {
 		return ok(sumbet.views.html.login.render(null));
 	}
@@ -124,7 +124,7 @@ public class AuthController extends Controller {
 			accountService.clearSession(sessionToken);
 		}
 
-		// redirect to login
-		return redirect(sumbet.controllers.routes.AuthController.login());
+		// redirect to homepage
+		return redirect(sumbet.controllers.routes.Application.index());
 	}
 }

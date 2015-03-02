@@ -5,12 +5,15 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
 
 import play.Logger;
+import play.libs.Json;
 import play.libs.F.Promise;
 import play.mvc.Action.Simple;
+import play.mvc.Http;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import sumbet.Constants;
 import sumbet.SumBetGlobal;
+import sumbet.dto.api.ApiErrorDto;
 import sumbet.services.AccountService;
 
 public class SessionRequiredAction extends Simple {	
@@ -23,19 +26,26 @@ public class SessionRequiredAction extends Simple {
 		if(token == null){
 			// NO SESSION
 			logger.debug("No session found");
-			return Promise.pure(redirect(sumbet.controllers.routes.AuthController.login()));
+			return redirectUnauthorized(context);
 		}
 		
 		// VALIDATE SESSION
 		AccountService accountService = SumBetGlobal.getInjector().getInstance(AccountService.class);
 		if(!accountService.isValidSession(token).get(30, TimeUnit.SECONDS)){
 			logger.debug("Session is NOT valid");
-			return Promise.pure(redirect(sumbet.controllers.routes.AuthController.login()));
+			return redirectUnauthorized(context);
 		}
 		
 		// AUTHORIZED
 		logger.debug("Session is valid");
 		return delegate.call(context);
+	}
+
+	protected Promise<Result> redirectUnauthorized(Context context) {
+		if(context.request().path().startsWith("/api")){
+			return Promise.pure(unauthorized(Json.toJson(new ApiErrorDto("Unauthorized", Http.Status.UNAUTHORIZED))));
+		}
+		return Promise.pure(redirect(sumbet.controllers.routes.AuthController.login()));
 	}
 	
 	public static @Nullable String getCookieToken(Context context) {

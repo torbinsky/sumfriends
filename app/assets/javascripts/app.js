@@ -15,7 +15,7 @@ App.SessionController = Ember.Controller.extend({
 				self.set('account', result.account);
 			}
 		});
-	}.observes('account').on('init')
+	}.on('init')
 });
 
 App.IndexController = Ember.Controller.extend({

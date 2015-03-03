@@ -1,5 +1,3 @@
-import com.ketalo.play.plugins.emberjs.EmberJsKeys
-
 name := """sumbet"""
 
 version := "1.0-SNAPSHOT"
@@ -19,8 +17,6 @@ libraryDependencies ++= Seq(
   "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
-emberJsVersion := "1.7.0"
-
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file(".")).enablePlugins(PlayJava,SbtWeb)

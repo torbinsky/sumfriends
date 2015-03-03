@@ -8,6 +8,7 @@ server.pid
 *.iml
 *.eml
 
+/node_modules
 logs
 project/project
 project/target

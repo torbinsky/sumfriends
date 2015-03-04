@@ -6,10 +6,10 @@
 
 body {
   height: 100%;
-  background-color: #666;
+  background-color: #1B1B20;
   color: #fff;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
-  font-family: Alegreya Sans, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .app-title {

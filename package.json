@@ -1,5 +1,5 @@
 {
   "devDependencies": {
-    "ember-template-compiler": "~1.9.1"
+    "ember-template-compiler": "~1.9"
   }
 }

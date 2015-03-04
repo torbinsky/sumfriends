@@ -34,6 +34,15 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 	
 	@Override
+	public Promise<SummonerLeagueHistory> getLastSummonerLeagueHistory(long summonerId, String queueType) {		
+		return createPromise(() -> doGetLastSummonerLeagueHistory(summonerId, queueType));
+	}
+
+	private SummonerLeagueHistory doGetLastSummonerLeagueHistory(long summonerId, String queueType) {
+		return Ebean.find(SummonerLeagueHistory.class).orderBy().desc("createdAt").setMaxRows(1).findUnique();
+	}
+
+	@Override
 	public Promise<String> updateUserAccountSession(long accountId, String token){
 		return createPromise(() -> doUpdateUserAccountSession(accountId, token));
 	}

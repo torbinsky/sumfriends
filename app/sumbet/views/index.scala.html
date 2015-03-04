@@ -14,7 +14,8 @@
 				<div class="col-sm-12"><h1 class="app-title">SumBet</h1></div>
 			</div>
 			<div class="row panel content-main">
-	    		{{outlet}}	    		
+	    		{{outlet}}
+				{{outlet 'modal'}}
 			</div>
 		</div>
 	</script>
@@ -52,5 +53,8 @@
         <script src="@routes.Assets.at("makebet.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("summoner.js")" type="text/javascript"></script>
         <script src="@routes.Assets.at("match-history.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("components/login-prompt.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("scooties.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("summoner-glance.js")" type="text/javascript"></script>
     </body>
 </html>

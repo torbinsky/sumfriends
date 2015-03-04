@@ -1,5 +1,7 @@
 package sumbet.controllers;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
 
 import play.Logger;
@@ -8,11 +10,15 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
+import sumbet.actions.SessionRequiredAction;
+import sumbet.dto.api.SummonerDto;
+import sumbet.dto.api.UserAccountDto;
 import sumbet.models.Match;
+import sumbet.models.SummonerLeagueHistory;
 import sumbet.services.AccountService;
 import sumbet.services.DataService;
-import sumbet.actions.SessionRequiredAction;
-import sumbet.dto.api.*;
+
+import com.robrua.orianna.type.core.common.QueueType;
 
 @With({SessionRequiredAction.class})
 public class ApiController extends Controller {
@@ -40,7 +46,7 @@ public class ApiController extends Controller {
 	}
 	
 	public Result getMatch(long matchId){
-		logger.debug("getMatch(" + matchId + ")");
+		logger.debug("getMatch(" + matchId + ")");		
 		return ok(Json.toJson(new Match()));
 	}
 	
@@ -49,8 +55,9 @@ public class ApiController extends Controller {
 		return database.getSummonerById(summonerId).map(s -> {
 			if(s == null){
 				return notFound();
-			}else{				
-				return (Result)ok(Json.toJson(new SummonerDto(s)));
+			}else{
+				SummonerLeagueHistory history = database.getLastSummonerLeagueHistory(summonerId, QueueType.RANKED_SOLO_5x5.toString()).get(5, TimeUnit.SECONDS);
+				return (Result)ok(Json.toJson(new SummonerDto(s,history.id.wins,history.id.losses)));
 			}
 		});
 	}

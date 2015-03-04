@@ -40,7 +40,14 @@ public class AccountServiceImpl implements AccountService {
 			if(sum == null){
 				return Either.Right("Summoner not found");
 			}else{
-				return database.registerAccount(email, sum.id, passhash).get(10, TimeUnit.SECONDS);
+				Promise<Either<UserAccount, String>> registerPromise = database.registerAccount(email, sum.id, passhash);
+				registerPromise.onRedeem(callback -> {
+					// On successful register, track the summoner
+					if(callback.left.isDefined()){
+						database.trackSummoner(callback.left.get().summonerId);
+					}
+				});
+				return registerPromise.get(10, TimeUnit.SECONDS);
 			}
 		});
 	}

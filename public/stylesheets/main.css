@@ -45,3 +45,11 @@ body {
 	border-bottom-style: solid;
 	border-bottom-width: 1px;
 }
+
+.wins {
+	color: #2ecc71;
+}
+
+.losses {
+	color: #c0392b;
+}

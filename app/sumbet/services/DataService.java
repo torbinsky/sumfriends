@@ -40,4 +40,5 @@ public interface DataService {
 	Promise<UserAccount> getUserAccountByEmail(String email);
 	Promise<Either<UserAccount, String>> registerAccount(String email, long summonerId, String passhash);
 	Promise<String> updateUserAccountSession(long accountId, String token);
+	Promise<SummonerLeagueHistory> getLastSummonerLeagueHistory(long summonerId, String queueType);
 }

@@ -1,4 +1,4 @@
-name := """sumbet"""
+name := """sumfriends"""
 
 version := "1.0-SNAPSHOT"
 

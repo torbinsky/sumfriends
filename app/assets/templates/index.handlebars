@@ -1,10 +1,9 @@
-<h1></h1>
-
+<p class="big-text">The Struggle is Real.</p>
 {{#if account}}
 <div class="col-sm-1"></div>
 <div id="make-bet" class="col-sm-5">
 	<div>
-		<p class="big-text">Make a Bet.<br />Let the Struggle Begin.</p>
+		
 		{{#link-to 'makebet' classNames="btn btn-primary"}}Make a Bet{{/link-to}}
 	</div>
 </div>
@@ -16,7 +15,8 @@
 </div>
 <div class="col-sm-1"></div>
 {{else}}
-	<p class="big-text">Make a Bet.<br />Let the Struggle Begin.</p>
-	<br />
+<div class="col-sm-12">
+	<br />	
 	{{login-prompt}}
+</div>
 {{/if}}

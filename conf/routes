@@ -3,17 +3,17 @@
 # ~~~~
 
 # Home page
-GET     /                           						@sumbet.controllers.Application.index()
-GET		/login												@sumbet.controllers.AuthController.login()
-POST	/login												@sumbet.controllers.AuthController.loginSubmit()
-GET		/signup												@sumbet.controllers.AuthController.signup()
-POST	/signupSubmit										@sumbet.controllers.AuthController.signupSubmit()
-GET		/logout												@sumbet.controllers.AuthController.logout()
+GET     /                           						@sumfriends.controllers.Application.index()
+GET		/login												@sumfriends.controllers.AuthController.login()
+POST	/login												@sumfriends.controllers.AuthController.loginSubmit()
+GET		/signup												@sumfriends.controllers.AuthController.signup()
+POST	/signupSubmit										@sumfriends.controllers.AuthController.signupSubmit()
+GET		/logout												@sumfriends.controllers.AuthController.logout()
 
-GET		/assets/javascripts/routes							@sumbet.controllers.Application.javascriptRoutes()
-GET		/api/v1/account										@sumbet.controllers.ApiController.getAccount()
-GET		/api/v1/matches/:matchId							@sumbet.controllers.ApiController.getMatch(matchId: Long)
-GET		/api/v1/summoners/:summonerId						@sumbet.controllers.ApiController.getSummoner(summonerId: Long)
+GET		/assets/javascripts/routes							@sumfriends.controllers.Application.javascriptRoutes()
+GET		/api/v1/account										@sumfriends.controllers.ApiController.getAccount()
+GET		/api/v1/matches/:matchId							@sumfriends.controllers.ApiController.getMatch(matchId: Long)
+GET		/api/v1/summoners/:summonerId						@sumfriends.controllers.ApiController.getSummoner(summonerId: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

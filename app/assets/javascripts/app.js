@@ -1,4 +1,6 @@
-window.App = Ember.Application.create();
+window.App = Ember.Application.create({
+	rootElement: '#app'
+});
 
 App.ApplicationAdapter = DS.RESTAdapter.extend({
   namespace: 'api/v1'
@@ -34,7 +36,7 @@ App.ScootiesController = Ember.Controller.extend({
 	},
 	scooties: function() {
 		return this.getScooties();
-	}.property('summonerIds')
+	}.property('summonerIds.@each')
 });
 
 var attr = DS.attr;

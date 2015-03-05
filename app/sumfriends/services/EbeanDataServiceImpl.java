@@ -12,12 +12,12 @@ import play.libs.Akka;
 import play.libs.F.Either;
 import play.libs.F.Function0;
 import play.libs.F.Promise;
-import sumfriends.models.Goal;
+import sumfriends.models.Challenge;
 import sumfriends.models.Match;
 import sumfriends.models.MatchParticipant;
 import sumfriends.models.Summoner;
-import sumfriends.models.SummonerGoal;
-import sumfriends.models.SummonerGoalId;
+import sumfriends.models.SummonerChallenge;
+import sumfriends.models.SummonerChallengeId;
 import sumfriends.models.SummonerLeagueHistory;
 import sumfriends.models.TrackedSummoner;
 import sumfriends.models.UserAccount;
@@ -213,24 +213,24 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 
 	@Override
-	public Promise<Goal> createGoal(Goal goal) {
-		logger.debug("Creating goal " + goal);
-		return createPromise(() -> doCreateGoal(goal));
+	public Promise<Challenge> createChallenge(Challenge challenge) {
+		logger.debug("Creating challenge " + challenge);
+		return createPromise(() -> doCreateChallenge(challenge));
 	}
 	
-	private Goal doCreateGoal(Goal goal){
-		Ebean.save(goal);
-		return goal;
+	private Challenge doCreateChallenge(Challenge challenge){
+		Ebean.save(challenge);
+		return challenge;
 	}
 
 	@Override
-	public Promise<Void> watchGoal(long goalId, long watchingSummonerId) {
-		logger.debug("Summoner " + watchingSummonerId + " is watching goal " + goalId);
-		SummonerGoal bs = new SummonerGoal(new SummonerGoalId(goalId, watchingSummonerId));
-		return createPromise(() -> doJoinGoal(bs));
+	public Promise<Void> watchChallenge(long challengeId, long watchingSummonerId) {
+		logger.debug("Summoner " + watchingSummonerId + " is watching challenge " + challengeId);
+		SummonerChallenge bs = new SummonerChallenge(new SummonerChallengeId(challengeId, watchingSummonerId));
+		return createPromise(() -> doJoinChallenge(bs));
 	}
 	
-	private Void doJoinGoal(SummonerGoal watchingSummoner){
+	private Void doJoinChallenge(SummonerChallenge watchingSummoner){
 		Ebean.save(watchingSummoner);
 		return null;
 	}

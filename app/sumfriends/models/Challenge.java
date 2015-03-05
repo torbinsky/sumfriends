@@ -12,7 +12,7 @@ import play.db.ebean.Model;
 import play.libs.Json;
 
 @Entity
-public class Goal extends Model {
+public class Challenge extends Model {
 	@Id
     @GeneratedValue
     public long id;

@@ -6,16 +6,16 @@ import javax.persistence.Entity;
 import play.db.ebean.Model;
 
 @Entity
-public class SummonerGoal extends Model {
+public class SummonerChallenge extends Model {
 	@EmbeddedId
-	public SummonerGoalId id;
+	public SummonerChallengeId id;
 
 	
-	public SummonerGoal() {
+	public SummonerChallenge() {
 		super();
 	}
 
-	public SummonerGoal(SummonerGoalId id) {
+	public SummonerChallenge(SummonerChallengeId id) {
 		super();
 		this.id = id;
 	}

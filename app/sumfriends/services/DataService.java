@@ -7,7 +7,7 @@ import javax.annotation.Nullable;
 
 import play.libs.F.Either;
 import play.libs.F.Promise;
-import sumfriends.models.Goal;
+import sumfriends.models.Challenge;
 import sumfriends.models.Match;
 import sumfriends.models.MatchParticipant;
 import sumfriends.models.Summoner;
@@ -21,8 +21,8 @@ public interface DataService {
 	Promise<Summoner> getSummonerById(long id);
 	Promise<Summoner> createOrUpdateSummoner(Summoner summoner);
 	Promise<SummonerLeagueHistory> getOrCreateSummonerLeagueHistory(SummonerLeagueHistory history);
-	Promise<Goal> createGoal(Goal goal);
-	Promise<Void> watchGoal(long goalId, long watchingSummonerId);
+	Promise<Challenge> createChallenge(Challenge challenge);
+	Promise<Void> watchChallenge(long challengeId, long watchingSummonerId);
 	Promise<Match> saveMatchIfNew(Match match);
 	Promise<MatchParticipant> saveMatchParticipantIfNew(MatchParticipant participant);
 	Promise<TrackedSummoner> trackSummoner(long summonerId);

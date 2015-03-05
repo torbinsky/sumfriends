@@ -26,6 +26,12 @@ App.IndexController = Ember.Controller.extend({
 	account: Ember.computed.alias('controllers.session.account')
 });
 
+App.SummonerGlanceController = Ember.ObjectController.extend({
+	summoner: null,
+	data: [[1,2,3,4,5]],
+	labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+});
+
 App.ScootiesController = Ember.Controller.extend({
 	summonerIds: [31335008, 31243475, 50693141, 40856292, 35324185, 27463371, 30530946],
 	getScooties: function(){

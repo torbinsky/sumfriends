@@ -1,19 +1,5 @@
-<p class="big-text">The Struggle is Real.</p>
-{{#if account}}
-<div class="col-sm-1"></div>
-<div id="make-bet" class="col-sm-5">
-	<div>
-		
-		{{#link-to 'makebet' classNames="btn btn-primary"}}Make a Bet{{/link-to}}
-	</div>
-</div>
-<div id="your-bets" class="col-sm-5 well">
-	<p class="text-uppercase header big-text">Your <em>Bets</em></p>
-	<div>
-	
-	</div>
-</div>
-<div class="col-sm-1"></div>
-{{else}}
+<!-- <p class="big-text">The Struggle is Real.</p> -->
 
-{{/if}}
+{{#each summoner in model}}
+	{{render 'summoner-glance' summoner}}
+{{/each}}

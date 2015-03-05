@@ -13,11 +13,11 @@ import play.libs.F.Either;
 import play.libs.F.Function0;
 import play.libs.F.Promise;
 import sumfriends.models.Goal;
-import sumfriends.models.SummonerGoal;
-import sumfriends.models.SummonerGoalId;
 import sumfriends.models.Match;
 import sumfriends.models.MatchParticipant;
 import sumfriends.models.Summoner;
+import sumfriends.models.SummonerGoal;
+import sumfriends.models.SummonerGoalId;
 import sumfriends.models.SummonerLeagueHistory;
 import sumfriends.models.TrackedSummoner;
 import sumfriends.models.UserAccount;
@@ -33,6 +33,15 @@ public class EbeanDataServiceImpl implements DataService {
 		
 	}
 	
+	@Override
+	public Promise<List<Summoner>> getSummoners(int limit) {
+		return createPromise(() -> doGetSummoners(limit));
+	}
+
+	private List<Summoner> doGetSummoners(int limit) {
+		return Ebean.find(Summoner.class).setMaxRows(limit).findList();
+	}
+
 	@Override
 	public Promise<SummonerLeagueHistory> getLastSummonerLeagueHistory(long summonerId, String queueType) {		
 		return createPromise(() -> doGetLastSummonerLeagueHistory(summonerId, queueType));

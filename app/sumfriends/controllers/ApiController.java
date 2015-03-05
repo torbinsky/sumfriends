@@ -12,6 +12,7 @@ import play.mvc.Result;
 import play.mvc.With;
 import sumfriends.actions.SessionRequiredAction;
 import sumfriends.dto.api.SummonerDto;
+import sumfriends.dto.api.SummonersDto;
 import sumfriends.dto.api.UserAccountDto;
 import sumfriends.models.Match;
 import sumfriends.models.SummonerLeagueHistory;
@@ -20,7 +21,6 @@ import sumfriends.services.DataService;
 
 import com.robrua.orianna.type.core.common.QueueType;
 
-@With({SessionRequiredAction.class})
 public class ApiController extends Controller {
 	static final Logger.ALogger logger = Logger.of(ApiController.class);
 	
@@ -33,6 +33,7 @@ public class ApiController extends Controller {
 		this.accountService = accountService;		
 	}
 	
+	@With({SessionRequiredAction.class})
 	public Promise<Result> getAccount(){
 		logger.debug("getAccount");
 		String token = getSessionToken();		
@@ -48,6 +49,12 @@ public class ApiController extends Controller {
 	public Result getMatch(long matchId){
 		logger.debug("getMatch(" + matchId + ")");		
 		return ok(Json.toJson(new Match()));
+	}
+	
+	public Promise<Result> getSummoners(int limit){
+		return database.getSummoners(limit).map(summoners -> {
+			return ok(Json.toJson(new SummonersDto(summoners)));
+		});
 	}
 	
 	public Promise<Result> getSummoner(long summonerId){

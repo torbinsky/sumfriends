@@ -16,6 +16,7 @@ import sumfriends.models.TrackedSummoner;
 import sumfriends.models.UserAccount;
 
 public interface DataService {
+	Promise<List<Summoner>> getSummoners(int limit);
 	Promise<Summoner> getSummonerByName(String name);
 	Promise<Summoner> getSummonerById(long id);
 	Promise<Summoner> createOrUpdateSummoner(Summoner summoner);

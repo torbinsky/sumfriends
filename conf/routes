@@ -13,6 +13,7 @@ GET		/logout												@sumfriends.controllers.AuthController.logout()
 GET		/assets/javascripts/routes							@sumfriends.controllers.Application.javascriptRoutes()
 GET		/api/v1/account										@sumfriends.controllers.ApiController.getAccount()
 GET		/api/v1/matches/:matchId							@sumfriends.controllers.ApiController.getMatch(matchId: Long)
+GET		/api/v1/summoners									@sumfriends.controllers.ApiController.getSummoners(limit: Int ?= 10)
 GET		/api/v1/summoners/:summonerId						@sumfriends.controllers.ApiController.getSummoner(summonerId: Long)
 
 # Map static resources from the /public folder to the /assets URL path

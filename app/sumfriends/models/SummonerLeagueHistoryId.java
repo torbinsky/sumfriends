@@ -7,6 +7,7 @@ import play.libs.Json;
 
 @Embeddable
 public class SummonerLeagueHistoryId extends Model {
+    public long summonerId;
 	public String queue;
 	public int wins;
 	public int losses;
@@ -15,8 +16,9 @@ public class SummonerLeagueHistoryId extends Model {
 		super();
 	}
 	
-	public SummonerLeagueHistoryId(String queue, int wins, int losses) {
+	public SummonerLeagueHistoryId(long summonerId, String queue, int wins, int losses) {
 		super();
+        this.summonerId = summonerId;
 		this.queue = queue;
 		this.wins = wins;
 		this.losses = losses;
@@ -27,7 +29,8 @@ public class SummonerLeagueHistoryId extends Model {
 		if(arg0 instanceof SummonerLeagueHistoryId){
 			SummonerLeagueHistoryId that = (SummonerLeagueHistoryId)arg0;
 			return 
-					this.wins == that.wins && 
+					this.summonerId == that.summonerId &&
+			        this.wins == that.wins && 
 					this.losses == that.losses &&
 					this.queue.equals(that.queue);
 		}
@@ -38,11 +41,16 @@ public class SummonerLeagueHistoryId extends Model {
 	@Override
 	public int hashCode() {
 		int hash = 15;
+		hash = (int) (62 * hash + summonerId);
 	    hash = (62 * hash + wins);
 	    hash = (62 * hash + losses);
 	    hash = (62 * hash + queue.hashCode());
 	    
 	    return hash;
+	}
+	
+	public String toIdString(){
+	    return summonerId + "_" + queue + "_" + wins + "_" + losses;
 	}
 	
 	@Override

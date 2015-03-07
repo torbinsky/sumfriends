@@ -8,8 +8,6 @@ import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import play.db.ebean.Model;
 
 @Entity
@@ -21,13 +19,9 @@ public class UserAccount extends Model {
 	@Column(unique=true)
 	public String email;
 	
-	@JsonIgnore
 	public Date createdAt;
-	@JsonIgnore
 	public Date updatedAt;
-	@JsonIgnore
 	public String passhash;	
-	@JsonIgnore
 	@Column(unique=true)
 	public String sessionToken;
 

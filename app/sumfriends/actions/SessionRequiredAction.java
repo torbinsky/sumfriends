@@ -13,7 +13,7 @@ import play.mvc.Http.Context;
 import play.mvc.Result;
 import sumfriends.Constants;
 import sumfriends.SumFriendsGlobal;
-import sumfriends.dto.api.ApiErrorDto;
+import sumfriends.dto.api.ErrorDto;
 import sumfriends.services.AccountService;
 
 public class SessionRequiredAction extends Simple {	
@@ -43,7 +43,7 @@ public class SessionRequiredAction extends Simple {
 
 	protected Promise<Result> redirectUnauthorized(Context context) {
 		if(context.request().path().startsWith("/api")){
-			return Promise.pure(unauthorized(Json.toJson(new ApiErrorDto("Unauthorized", Http.Status.UNAUTHORIZED))));
+			return Promise.pure(unauthorized(Json.toJson(new ErrorDto("Unauthorized", Http.Status.UNAUTHORIZED))));
 		}
 		return Promise.pure(redirect(sumfriends.controllers.routes.AuthController.login()));
 	}

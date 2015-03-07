@@ -13,7 +13,6 @@ import play.libs.Json;
 public class SummonerLeagueHistory extends Model {
 	@EmbeddedId
 	public SummonerLeagueHistoryId id;
-	public long summonerId;
 	public int leaguePoints;
 	public String tier;
 	public String division;
@@ -22,8 +21,7 @@ public class SummonerLeagueHistory extends Model {
 	
 	public SummonerLeagueHistory(String queue, long summonerId, int leaguePoints, String tier, String division, int score, int wins, int losses) {
 		super();
-		id = new SummonerLeagueHistoryId(queue, wins, losses);
-		this.summonerId = summonerId;
+		id = new SummonerLeagueHistoryId(summonerId, queue, wins, losses);
 		this.leaguePoints = leaguePoints;
 		this.tier = tier;
 		this.division = division;

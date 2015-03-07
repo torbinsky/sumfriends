@@ -34,6 +34,15 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 	
 	@Override
+    public Promise<List<SummonerLeagueHistory>> getSummonerLeagueHistory(long summonerId) {
+	    return createPromise(() -> doGetSummonerLeagueHistory(summonerId));
+    }
+
+	private List<SummonerLeagueHistory> doGetSummonerLeagueHistory(long summonerId) {
+	    return Ebean.find(SummonerLeagueHistory.class).where().eq("id.summonerId", summonerId).findList();
+	}
+	
+    @Override
 	public Promise<List<Summoner>> getSummoners(int limit) {
 		return createPromise(() -> doGetSummoners(limit));
 	}
@@ -48,7 +57,7 @@ public class EbeanDataServiceImpl implements DataService {
 	}
 
 	private SummonerLeagueHistory doGetLastSummonerLeagueHistory(long summonerId, String queueType) {
-		return Ebean.find(SummonerLeagueHistory.class).orderBy().desc("createdAt").setMaxRows(1).findUnique();
+		return Ebean.find(SummonerLeagueHistory.class).where().eq("id.summonerId", summonerId).eq("queue", queueType).orderBy().desc("createdAt").setMaxRows(1).findUnique();
 	}
 
 	@Override

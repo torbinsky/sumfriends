@@ -1,6 +1,6 @@
 package sumfriends.controllers;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -11,15 +11,12 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.With;
 import sumfriends.actions.SessionRequiredAction;
-import sumfriends.dto.api.SummonerDto;
-import sumfriends.dto.api.SummonersDto;
 import sumfriends.dto.api.UserAccountDto;
-import sumfriends.models.Match;
+import sumfriends.models.Summoner;
 import sumfriends.models.SummonerLeagueHistory;
 import sumfriends.services.AccountService;
 import sumfriends.services.DataService;
-
-import com.robrua.orianna.type.core.common.QueueType;
+import sumfriends.utils.ApiDataTransformer;
 
 public class ApiController extends Controller {
 	static final Logger.ALogger logger = Logger.of(ApiController.class);
@@ -33,6 +30,13 @@ public class ApiController extends Controller {
 		this.accountService = accountService;		
 	}
 	
+	public Result foo(){
+	    database.createOrUpdateSummoner(new Summoner(1234, "Test Summoner", 444, new Date(), 30));
+	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5X5", 1234, 40, "Diamond", "I", 1024, 5, 5));
+	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5X5", 1234, 32, "Diamond", "I", 1000, 5, 6));
+	    return ok();
+	}
+	
 	@With({SessionRequiredAction.class})
 	public Promise<Result> getAccount(){
 		logger.debug("getAccount");
@@ -41,36 +45,36 @@ public class ApiController extends Controller {
 			if(ua == null){
 				return notFound();
 			}else{
-				return (Result)ok(Json.toJson(new UserAccountDto(ua)));
+				return ok(new UserAccountDto(ua).toJson());
 			}
 		});		
 	}
 	
 	public Result getMatch(long matchId){
 		logger.debug("getMatch(" + matchId + ")");		
-		return ok(Json.toJson(new Match()));
+		return ok();
 	}
 	
 	public Promise<Result> getSummoners(int limit){
 		return database.getSummoners(limit).map(summoners -> {
-			return ok(Json.toJson(new SummonersDto(summoners)));
+			return ok(Json.newObject().set("summoners", Json.toJson(ApiDataTransformer.transformSummoners(summoners))));
 		});
+	}
+	
+	public Promise<Result> getSummonerLeagueHistory(long summonerId){
+	    logger.debug("getSummonerLeagueHistory(" + summonerId + ")");
+	    return database.getSummonerLeagueHistory(summonerId).map(history -> {
+	        return ok(Json.toJson(ApiDataTransformer.transformLeagueHistories(history)));
+	    });
 	}
 	
 	public Promise<Result> getSummoner(long summonerId){
 		logger.debug("getSummoner(" + summonerId + ")");
 		return database.getSummonerById(summonerId).map(s -> {
-			if(s == null){
-				return notFound();
-			}else{
-				SummonerLeagueHistory history = database.getLastSummonerLeagueHistory(summonerId, QueueType.RANKED_SOLO_5x5.toString()).get(5, TimeUnit.SECONDS);
-				int wins = 0, losses = 0;
-				if(history != null){
-					wins = history.id.wins;
-					losses = history.id.losses;
-				}
-				return (Result)ok(Json.toJson(new SummonerDto(s,wins,losses)));
-			}
+		    if(s == null){
+		        return notFound();
+		    }
+			return ok(ApiDataTransformer.transform(s).toJson());
 		});
 	}
 	

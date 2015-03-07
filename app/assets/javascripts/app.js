@@ -44,24 +44,3 @@ App.ScootiesController = Ember.Controller.extend({
 		return this.getScooties();
 	}.property('summonerIds.@each')
 });
-
-var attr = DS.attr;
-
-App.Summoner = DS.Model.extend({
-	name: attr('string'),
-	profileIconId: attr('number'),
-	revisionDate: attr('date'),
-	summonerLevel: attr('number'),
-	wins: attr('number'),
-	losses: attr('number'),
-	winPercent: function() {
-		var wins = this.get('wins');
-		var losses = this.get('losses');
-		return (wins / (wins + losses) * 100).toPrecision(3);
-	}.property('wins', 'losses')
-});
-
-App.Account = DS.Model.extend({  
-	summonerId: attr(),
-	email: attr('string')
-});

@@ -5,10 +5,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 
 import play.db.ebean.Model;
+
+import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.UpdatedTimestamp;
 
 @Entity
 public class UserAccount extends Model {
@@ -18,8 +19,9 @@ public class UserAccount extends Model {
 	public long summonerId;
 	@Column(unique=true)
 	public String email;
-	
+	@CreatedTimestamp
 	public Date createdAt;
+	@UpdatedTimestamp
 	public Date updatedAt;
 	public String passhash;	
 	@Column(unique=true)
@@ -30,16 +32,5 @@ public class UserAccount extends Model {
 		this.summonerId = summonerId;
 		this.email = email;
 		this.passhash = passhash;
-	}
-
-	@PrePersist
-	void createdAt() {
-		this.createdAt = new Date();
-		this.updatedAt = new Date();
-	}
-	
-	@PreUpdate
-	void updatedAt() {
-		this.updatedAt = new Date();
 	}
 }

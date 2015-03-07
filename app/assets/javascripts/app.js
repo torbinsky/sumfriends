@@ -27,9 +27,16 @@ App.IndexController = Ember.Controller.extend({
 });
 
 App.SummonerGlanceController = Ember.ObjectController.extend({
-	summoner: null,
-	data: [[1,2,3,4,5]],
-	labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']
+	chartData: function(){
+		return this.get('history').map(function(history){
+			return history.get('score');
+		});
+	}.property('model.history'),
+	chartLabels: function(){
+		return this.get('history').map(function(history){
+			return history.get('createdAt');
+		});
+	}.property('model.history')
 });
 
 App.ScootiesController = Ember.Controller.extend({

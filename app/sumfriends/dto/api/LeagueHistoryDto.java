@@ -1,5 +1,8 @@
 package sumfriends.dto.api;
 
+import java.util.Date;
+
+
 public class LeagueHistoryDto extends AbstractWrappedApiDto {
     public String id;
     public long summonerId;
@@ -10,12 +13,13 @@ public class LeagueHistoryDto extends AbstractWrappedApiDto {
     public String division;
     public int score;
     public String queue;
+	public Date createdAt;
 
     public LeagueHistoryDto() {
         super();
     }
 
-    public LeagueHistoryDto(String id, long summonerId, int wins, int losses, int leaguePoints, String tier, String division, int score, String queue) {
+    public LeagueHistoryDto(String id, long summonerId, int wins, int losses, int leaguePoints, String tier, String division, int score, String queue, Date createdAt) {
         super();
         this.id = id;
         this.summonerId = summonerId;
@@ -26,11 +30,12 @@ public class LeagueHistoryDto extends AbstractWrappedApiDto {
         this.division = division;
         this.score = score;
         this.queue = queue;
+		this.createdAt = createdAt;
     }
-
-    @Override
+    
+	@Override
     protected String _getWrapperName() {
-        return "leaguehistory";
+        return "leagueHistory";
     }
 
 }

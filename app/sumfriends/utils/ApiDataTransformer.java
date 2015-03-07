@@ -26,7 +26,8 @@ public class ApiDataTransformer {
                 historyModel.tier, 
                 historyModel.division, 
                 historyModel.score, 
-                historyModel.id.queue
+                historyModel.id.queue,
+                historyModel.createdAt
          );
     }
     public static List<SummonerDto> transformSummoners(List<Summoner> summonerModels){

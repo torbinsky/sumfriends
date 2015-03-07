@@ -1,16 +1,20 @@
 App.LineChartComponent = Ember.Component.extend({
-	chartLabels: [],
-	chartData: [],
+	labels: [],
+	data: [],
 	hasData: function(){
-		return (typeof this.chartData !== 'undefined') && this.chartData.length > 0;
-	}.property('chartData.@each'),
+		var doesHave = (typeof this.get('data') !== 'undefined') && this.get('data').length > 0;
+		return doesHave;
+	}.property('data.@each'),
 	didInsertElement : function() {
-		var selector = '#' + this.elementId + ' .ct-chart';
-		new Chartist.Line(selector, {
-			labels : this.chartLabels,
-			series : this.chartData
-		}, {
-			fullWidth : true
-		});
+		var self = this;
+		if(self.get('hasData')){
+			var selector = '#' + this.elementId + ' .ct-chart';
+			new Chartist.Line(selector, {
+				labels : self.get('labels'),
+				series : [self.get('data')]
+			}, {
+				fullWidth : true
+			});
+		}
 	}.observes('hasData')
 });

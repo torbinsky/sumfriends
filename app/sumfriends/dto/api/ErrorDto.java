@@ -1,6 +1,7 @@
 package sumfriends.dto.api;
 
 
+
 public class ErrorDto extends AbstractWrappedApiDto {
     public String msg;
     public int status;
@@ -14,7 +15,7 @@ public class ErrorDto extends AbstractWrappedApiDto {
         this.status = status;
     }
     
-    @Override
+	@Override
     protected String _getWrapperName() {
         return "error";
     }

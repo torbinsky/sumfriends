@@ -4,10 +4,11 @@ import java.util.Date;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.PrePersist;
 
 import play.db.ebean.Model;
 import play.libs.Json;
+
+import com.avaje.ebean.annotation.CreatedTimestamp;
 
 @Entity
 public class SummonerLeagueHistory extends Model {
@@ -17,6 +18,7 @@ public class SummonerLeagueHistory extends Model {
 	public String tier;
 	public String division;
 	public int score;
+	@CreatedTimestamp
 	public Date createdAt;
 	
 	public SummonerLeagueHistory(String queue, long summonerId, int leaguePoints, String tier, String division, int score, int wins, int losses) {
@@ -26,11 +28,6 @@ public class SummonerLeagueHistory extends Model {
 		this.tier = tier;
 		this.division = division;
 		this.score = score;
-	}
-
-	@PrePersist
-	void createdAt() {
-		this.createdAt = new Date();
 	}
 
 	@Override

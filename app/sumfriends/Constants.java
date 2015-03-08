@@ -2,6 +2,7 @@ package sumfriends;
 
 public class Constants {
 	public static final String SESSION_TOKEN_COOKIE = "sess_token";
+	public static final String API_ROOT = "/api/v1";
 	
 	public static class ConfigPropNameConstants {
 		public static final String RIOT_API_KEY = "riot.api.key";

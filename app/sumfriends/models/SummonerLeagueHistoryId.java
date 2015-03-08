@@ -24,6 +24,21 @@ public class SummonerLeagueHistoryId extends Model {
 		this.losses = losses;
 	}
 	
+	public SummonerLeagueHistoryId(String id) {
+		String[] idParts = id.split("-");
+		if(idParts.length != 4){
+			throw new IllegalArgumentException("Invalid ID format");
+		}
+		this.summonerId = Long.parseLong(idParts[0]);
+		this.queue = idParts[1];
+		this.wins = Integer.parseInt(idParts[2]);
+		this.losses = Integer.parseInt(idParts[3]);
+	}
+	
+	public String toIdString(){
+		return summonerId + "-" + queue + "-" + wins + "-" + losses;
+	}
+
 	@Override
 	public boolean equals(Object arg0) {
 		if(arg0 instanceof SummonerLeagueHistoryId){
@@ -47,10 +62,6 @@ public class SummonerLeagueHistoryId extends Model {
 	    hash = (62 * hash + queue.hashCode());
 	    
 	    return hash;
-	}
-	
-	public String toIdString(){
-	    return summonerId + "_" + queue + "_" + wins + "_" + losses;
 	}
 	
 	@Override

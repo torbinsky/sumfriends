@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   "joda-time" % "joda-time" % "2.3",
   "com.typesafe.akka" %% "akka-actor" % "2.2.3",
   "org.postgresql" % "postgresql" % "9.4-1201-jdbc41",
-  "org.mindrot" % "jbcrypt" % "0.3m"
+  "org.mindrot" % "jbcrypt" % "0.3m",
+  "com.google.guava" % "guava" % "18.0"
 )
 
 javacOptions ++= Seq("-source", "1.8", "-target", "1.8")

@@ -3,12 +3,12 @@
 		<h1>{{name}}</h1>
 	</div>
 	<div class="col-sm-4">
-		<!-- TODO: REPLACE THIS -->
-		<h2><span class="wins">5</span> / <span class="losses">5</span> (50%)</h2>
+		<h2><span class="wins">{{lastSoloRanked.wins}}</span> / <span class="losses">{{lastSoloRanked.losses}}</span> ({{winRate}}%)</h2>
 	</div>
 </div>
 <div class="row">
 	<div class="col-sm-12">
+		
 		{{line-chart data=chartData labels=chartLabels}}
 	</div>
 </div>

@@ -33,10 +33,10 @@ public class ApiController extends Controller {
 	public Result foo(){
 		database.createOrUpdateSummoner(new Summoner(4444, "Test Summoner 2", 456, new Date(), 30));
 	    database.createOrUpdateSummoner(new Summoner(1234, "Test Summoner", 444, new Date(), 30));
-	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5X5", 1234, 40, "Diamond", "I", 1024, 5, 5));
-	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5X5", 1234, 32, "Diamond", "I", 1000, 5, 6));
-	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5X5", 1234, 46, "Diamond", "I", 1025, 6, 6));
-	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5X5", 1234, 60, "Diamond", "I", 1050, 7, 6));
+	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5x5", 1234, 40, "Diamond", "I", 1024, 5, 5));
+	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5x5", 1234, 32, "Diamond", "I", 1000, 5, 6));
+	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5x5", 1234, 46, "Diamond", "I", 1025, 6, 6));
+	    database.getOrCreateSummonerLeagueHistory(new SummonerLeagueHistory("RANKED_SOLO_5x5", 1234, 60, "Diamond", "I", 1050, 7, 6));
 	    return ok();
 	}
 	
@@ -68,6 +68,24 @@ public class ApiController extends Controller {
 	    logger.debug("getSummonerLeagueHistory(" + summonerId + ")");
 	    return database.getSummonerLeagueHistory(summonerId).map(history -> {
 	        return ok(Json.newObject().set("leagueHistories", Json.toJson(ApiDataTransformer.transformLeagueHistories(history))));
+	    });
+	}
+	
+	public Promise<Result> getLastSummonerLeagueHistoryForQueue(long summonerId, String queue){
+		return database.getLastSummonerLeagueHistory(summonerId, queue).map(last -> {
+			if(last == null){
+				return notFound();
+			}
+	        return ok(ApiDataTransformer.transform(last).toJson());
+	    });
+	}
+	
+	public Promise<Result> getLeagueHistory(String id){
+		return database.getLastSummonerLeagueHistoryById(id).map(slh -> {
+			if(slh == null){
+				return notFound();
+			}
+	        return ok(ApiDataTransformer.transform(slh).toJson());
 	    });
 	}
 	

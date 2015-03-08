@@ -7,7 +7,9 @@ App.Summoner = DS.Model.extend({
 	profileIconId: attr('number'),
 	revisionDate: attr('date'),
 	summonerLevel: attr('number'),
-	history: hasMany('league-history', {async: true})
+	history: hasMany('league-history', {async: true}),
+	lastSoloRanked: belongsTo('league-history', {async: true, inverse: null}),
+	last: hasMany('league-history', {async: true, inverse: null})
 });
 
 App.LeagueHistory = DS.Model.extend({	
@@ -20,7 +22,7 @@ App.LeagueHistory = DS.Model.extend({
 	queue: attr('string'),
 	wins: attr('number'),
 	losses: attr('number'),
-	summoner: belongsTo('summoner', {async: true})
+	summoner: belongsTo('summoner', {async: true, inverse: 'history'})
 });
 
 App.Account = DS.Model.extend({  

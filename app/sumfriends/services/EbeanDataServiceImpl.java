@@ -19,6 +19,7 @@ import sumfriends.models.Summoner;
 import sumfriends.models.SummonerChallenge;
 import sumfriends.models.SummonerChallengeId;
 import sumfriends.models.SummonerLeagueHistory;
+import sumfriends.models.SummonerLeagueHistoryId;
 import sumfriends.models.TrackedSummoner;
 import sumfriends.models.UserAccount;
 
@@ -33,6 +34,15 @@ public class EbeanDataServiceImpl implements DataService {
 		
 	}
 	
+	@Override
+	public Promise<SummonerLeagueHistory> getLastSummonerLeagueHistoryById(String id) {
+		return createPromise(() -> doGetLastSummonerLeagueHistoryById(id));
+	}
+
+	private SummonerLeagueHistory doGetLastSummonerLeagueHistoryById(String id) {
+	    return Ebean.find(SummonerLeagueHistory.class, new SummonerLeagueHistoryId(id));
+	}
+
 	@Override
     public Promise<List<SummonerLeagueHistory>> getSummonerLeagueHistory(long summonerId) {
 	    return createPromise(() -> doGetSummonerLeagueHistory(summonerId));

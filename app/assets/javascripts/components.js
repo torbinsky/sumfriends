@@ -1,6 +1,4 @@
 App.LineChartComponent = Ember.Component.extend({
-	labels: [],
-	data: [],
 	hasData: function(){
 		var doesHave = (typeof this.get('data') !== 'undefined') && this.get('data').length > 0;
 		return doesHave;

@@ -33,13 +33,13 @@ public class EbeanDataServiceImpl implements DataService {
 	public EbeanDataServiceImpl(){
 		
 	}
-	
-	@Override
-	public Promise<SummonerLeagueHistory> getLastSummonerLeagueHistoryById(String id) {
-		return createPromise(() -> doGetLastSummonerLeagueHistoryById(id));
+
+    @Override
+	public Promise<SummonerLeagueHistory> getSummonerLeagueHistoryById(String id) {
+		return createPromise(() -> doGetSummonerLeagueHistoryById(id));
 	}
 
-	private SummonerLeagueHistory doGetLastSummonerLeagueHistoryById(String id) {
+	private SummonerLeagueHistory doGetSummonerLeagueHistoryById(String id) {
 	    return Ebean.find(SummonerLeagueHistory.class, new SummonerLeagueHistoryId(id));
 	}
 

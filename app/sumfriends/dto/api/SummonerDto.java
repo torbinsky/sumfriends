@@ -19,9 +19,8 @@ public class SummonerDto extends EmberDataSingleElementDto {
 		this.profileIconId = profileIconId;
 		this.revisionDate = revisionDate;
 		this.summonerLevel = summonerLevel;
-		addLink("history", "/summoners/" + id + "/leagueHistories");
-		addLink("last", "/summoners/" + id + "/leagueHistories/last");
-		addLink("lastSoloRanked", "/summoners/" + id + "/leagueHistories/last/" + QueueType.RANKED_SOLO_5x5);
+		addLink("history", sumfriends.controllers.routes.ApiController.getSummonerLeagueHistory(id).url());
+		addLink("lastSoloRanked", sumfriends.controllers.routes.ApiController.getLastSummonerLeagueHistoryForQueue(id, QueueType.RANKED_SOLO_5x5.toString()).url());
 	}
 
 	@Override

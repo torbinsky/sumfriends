@@ -43,5 +43,5 @@ public interface DataService {
 	Promise<String> updateUserAccountSession(long accountId, String token);
 	Promise<SummonerLeagueHistory> getLastSummonerLeagueHistory(long summonerId, String queueType);
     Promise<List<SummonerLeagueHistory>> getSummonerLeagueHistory(long summonerId);
-	Promise<SummonerLeagueHistory> getLastSummonerLeagueHistoryById(String id);
+	Promise<SummonerLeagueHistory> getSummonerLeagueHistoryById(String id);
 }

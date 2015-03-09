@@ -16,7 +16,6 @@ GET		/api/v1/matches/:matchId										@sumfriends.controllers.ApiController.get
 GET		/api/v1/summoners												@sumfriends.controllers.ApiController.getSummoners(limit: Int ?= 10)
 GET		/api/v1/summoners/:summonerId									@sumfriends.controllers.ApiController.getSummoner(summonerId: Long)
 GET		/api/v1/summoners/:summonerId/leagueHistories					@sumfriends.controllers.ApiController.getSummonerLeagueHistory(summonerId: Long)
-GET		/api/v1/summoners/:summonerId/leagueHistories/last				@sumfriends.controllers.ApiController.getSummonerLeagueHistory(summonerId: Long)
 GET		/api/v1/summoners/:summonerId/leagueHistories/last/:queue		@sumfriends.controllers.ApiController.getLastSummonerLeagueHistoryForQueue(summonerId: Long, queue: String)
 GET		/api/v1/leagueHistories/:id										@sumfriends.controllers.ApiController.getLeagueHistory(id: String)
 GET		/foo															@sumfriends.controllers.ApiController.foo()

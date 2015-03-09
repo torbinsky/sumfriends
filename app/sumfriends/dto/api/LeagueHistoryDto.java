@@ -26,7 +26,7 @@ public class LeagueHistoryDto extends EmberDataSingleElementDto {
 		this.score = score;
 		this.queue = queue;
 		this.createdAt = createdAt;
-		addLink("summoner", "/summoners/" + summonerId);
+		addLink("summoner", sumfriends.controllers.routes.ApiController.getSummoner(summonerId).url());
 	}
 
 	@Override

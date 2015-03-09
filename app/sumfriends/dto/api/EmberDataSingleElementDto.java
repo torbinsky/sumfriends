@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import play.libs.Json;
-import sumfriends.Constants;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -19,7 +18,7 @@ public abstract class EmberDataSingleElementDto {
 		return Json.newObject().set(_getWrapperName(), Json.toJson(this));
 	}
 	protected void addLink(String name, String path) {
-		links.put(name, Constants.API_ROOT + path);
+		links.put(name, path);
 	}
 	protected abstract String _getWrapperName();
 }

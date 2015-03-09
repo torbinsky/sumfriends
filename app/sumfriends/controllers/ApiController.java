@@ -69,7 +69,7 @@ public class ApiController extends Controller {
 	    return database.getSummonerLeagueHistory(summonerId).map(history -> {
 	        return ok(Json.newObject().set("leagueHistories", Json.toJson(ApiDataTransformer.transformLeagueHistories(history))));
 	    });
-	}
+	}	
 	
 	public Promise<Result> getLastSummonerLeagueHistoryForQueue(long summonerId, String queue){
 		return database.getLastSummonerLeagueHistory(summonerId, queue).map(last -> {
@@ -81,7 +81,7 @@ public class ApiController extends Controller {
 	}
 	
 	public Promise<Result> getLeagueHistory(String id){
-		return database.getLastSummonerLeagueHistoryById(id).map(slh -> {
+		return database.getSummonerLeagueHistoryById(id).map(slh -> {
 			if(slh == null){
 				return notFound();
 			}

@@ -8,8 +8,7 @@ App.Summoner = DS.Model.extend({
 	revisionDate: attr('date'),
 	summonerLevel: attr('number'),
 	history: hasMany('league-history', {async: true}),
-	lastSoloRanked: belongsTo('league-history', {async: true, inverse: null}),
-	last: hasMany('league-history', {async: true, inverse: null})
+	lastSoloRanked: belongsTo('league-history', {async: true, inverse: null})
 });
 
 App.LeagueHistory = DS.Model.extend({	
